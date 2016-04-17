@@ -4,139 +4,158 @@ Next generation of Stream API for NodeJS
 ### Table of Contents
   
 - [Class: Stream](#Stream)
-  - [Enum: OPENING](#Stream.OPENING)
-  - [Enum: RUNNING](#Stream.RUNNING)
-  - [Enum: CLOSING](#Stream.CLOSING)
-  - [Enum: CLOSED](#Stream.CLOSED)
+  - [Enum: OPENING](#Stream_OPENING)
+  - [Enum: RUNNING](#Stream_RUNNING)
+  - [Enum: CLOSING](#Stream_CLOSING)
+  - [Enum: CLOSED](#Stream_CLOSED)
   
-  - [Property: state](#Stream.state)
-  - [Property: readable](#Stream.readable)
-  - [Property: writable](#Stream.writable)
-  - [Property: isOpening](#Stream.isOpening)
-  - [Property: isRunning](#Stream.isRunning)
-  - [Property: isClosing](#Stream.isClosing)
-  - [Property: isClosed](#Stream.isClosed)
+  - [Property: state](#Stream_state)
+  - [Property: readable](#Stream_readable)
+  - [Property: writable](#Stream_writable)
+  - [Property: isOpening](#Stream_isOpening)
+  - [Property: isRunning](#Stream_isRunning)
+  - [Property: isClosing](#Stream_isClosing)
+  - [Property: isClosed](#Stream_isClosed)
   
-  - [Method: setState](#Stream.setState)
-  - [Method: close](#Stream.close)
-  - [Method: open](#Stream.open)
-  - [Method: data](#Stream.data)
-  - [Method: drain](#Stream.drain)
-  - [Method: resume](#Stream.resume)
-  - [Method: pause](#Stream.pause)
-  - [Method: end](#Stream.end)
-  - [Method: write](#Stream.write)
-  - [Method: push](#Stream.push)
-  - [Method: pair](#Stream.pair)
+  - [Method: setState](#Stream_setState)
+  - [Method: close](#Stream_close)
+  - [Method: open](#Stream_open)
+  - [Method: data](#Stream_data)
+  - [Method: drain](#Stream_drain)
+  - [Method: resume](#Stream_resume)
+  - [Method: pause](#Stream_pause)
+  - [Method: end](#Stream_end)
+  - [Method: write](#Stream_write)
+  - [Method: push](#Stream_push)
+  - [Method: pair](#Stream_pair)
   
-  - [Class: Promise](#Stream.Promise)
-  - [Object: _](#Stream._)
-- [Class: Promise](#Stream.Promise)
-  - [Method: then](#Stream.Promise.then)
-  - [Method: catch](#Stream.Promise.catch)
-  - [Method: finally](#Stream.Promise.finally)
+  - [Class: Promise](#Stream_Promise)
+  - [Object: _](#Stream__)
+- [Class: Promise](#Stream_Promise)
+  - [Method: then](#Stream_Promise_then)
+  - [Method: catch](#Stream_Promise_catch)
+  - [Method: finally](#Stream_Promise_finally)
   
-  - [Static: all](#Stream.Promise.all)
-  - [Static: forEach](#Stream.Promise.forEach)
+  - [Static: all](#Stream_Promise_all)
+  - [Static: forEach](#Stream_Promise_forEach)
 
-- [Object: _](#Stream._)
-  - [Static: isArray](#Stream._.isArray)
-  - [Static: isObject](#Stream._.isObject)
-  - [Static: isString](#Stream._.isString)
-  - [Static: isUndefined](#Stream._.isUndefined)
-  - [Static: isFunction](#Stream._.isFunction)
-  - [Static: isNumber](#Stream._.isNumber)
-  - [Static: isTypedArray](#Stream._.isTypedArray)
-  - [Static: isArrayBuffer](#Stream._.isArrayBuffer)
-  - [Static: isError](#Stream._.isError)
-  - [Static: isPromise](#Stream._.isPromise)
-  - [Static: size](#Stream._.size)
-  - [Static: now](#Stream._.now)
-  - [Static: extend](#Stream._.extend)
-  - [Static: forEach](#Stream._.forEach)
-  - [Static: once](#Stream._.once)
-  - [Static: delay](#Stream._.delay)
-  - [Static: random](#Stream._.random)
-  - [Static: sll_add](#Stream._.sll_add)
-  - [Static: sll_forEach](#Stream._.sll_forEach)
+- [Object: _](#Stream__)
+  - [Static: isArray](#Stream___isArray)
+  - [Static: isObject](#Stream___isObject)
+  - [Static: isString](#Stream___isString)
+  - [Static: isUndefined](#Stream___isUndefined)
+  - [Static: isFunction](#Stream___isFunction)
+  - [Static: isNumber](#Stream___isNumber)
+  - [Static: isTypedArray](#Stream___isTypedArray)
+  - [Static: isArrayBuffer](#Stream___isArrayBuffer)
+  - [Static: isError](#Stream___isError)
+  - [Static: isPromise](#Stream___isPromise)
+  - [Static: size](#Stream___size)
+  - [Static: now](#Stream___now)
+  - [Static: extend](#Stream___extend)
+  - [Static: forEach](#Stream___forEach)
+  - [Static: once](#Stream___once)
+  - [Static: delay](#Stream___delay)
+  - [Static: random](#Stream___random)
+  - [Static: sll_add](#Stream___sll_add)
+  - [Static: sll_forEach](#Stream___sll_forEach)
 
 ### Stream
 
-#### Stream.OPENING
+#### <a name="Stream_OPENING">Stream.OPENING</a>
 
-#### Stream.RUNNING
+#### <a name="Stream_RUNNING">Stream.RUNNING
 
-#### Stream.CLOSING
+#### <a name="Stream_CLOSING">Stream.CLOSING
 
-#### Stream.CLOSED
+#### <a name="Stream_CLOSED">Stream.CLOSED
 
-#### Stream.state
+#### <a name="Stream_state">Stream.state
 
-#### Stream.readable
+#### <a name="Stream_readable">Stream.readable
 
-#### Stream.writable
+#### <a name="Stream_writable">Stream.writable
 
-#### Stream.isOpening
+#### <a name="Stream_isOpening">Stream.isOpening
 
-#### Stream.isRunning
+#### <a name="Stream_isRunning">Stream.isRunning
 
-#### Stream.isClosing
+#### <a name="Stream_isClosing">Stream.isClosing
 
-#### Stream.isClosed
+#### <a name="Stream_isClosed">Stream.isClosed
 
-#### Stream.setState
+#### <a name="Stream_setState">Stream.setState
 
-#### Stream.close
+#### <a name="Stream_close">Stream.close
 
-#### Stream.open
+#### <a name="Stream_open">Stream.open
 
-#### Stream.data
+#### <a name="Stream_data">Stream.data
 
-#### Stream.drain
+#### <a name="Stream_drain">Stream.drain
 
-#### Stream.resume
+#### <a name="Stream_resume">Stream.resume
 
-#### Stream.pause
+#### <a name="Stream_pause">Stream.pause
 
-#### Stream.end
+#### <a name="Stream_end">Stream.end
 
-#### Stream.write
+#### <a name="Stream_write">Stream.write
 
-#### Stream.push
+#### <a name="Stream_push">Stream.push
 
-#### Stream.pair
+#### <a name="Stream_pair">Stream.pair
 
-### Stream.Promise
+### <a name="Stream_Promise">Stream.Promise
 
-#### Stream.Promise.then
+#### <a name="Stream_Promise_then">Stream.Promise.then
 
-#### Stream.Promise.catch
+#### <a name="Stream_Promise_catch">Stream.Promise.catch
 
-#### Stream.Promise.finally
+#### <a name="Stream_Promise_finally">Stream.Promise.finally
 
-#### Stream.Promise.all
+#### <a name="Stream_Promise_all">Stream.Promise.all
 
-#### Stream.Promise.forEach
+#### <a name="Stream_Promise_forEach">Stream.Promise.forEach
 
-### Stream._
+### <a name="Stream__">Stream._
 
-#### Stream._.isArray
-#### Stream._.isObject
-#### Stream._.isString
-#### Stream._.isUndefined
-#### Stream._.isFunction
-#### Stream._.isNumber
-#### Stream._.isTypedArray
-#### Stream._.isArrayBuffer
-#### Stream._.isError
-#### Stream._.isPromise
-#### Stream._.size
-#### Stream._.now
-#### Stream._.extend
-#### Stream._.forEach
-#### Stream._.once
-#### Stream._.delay
-#### Stream._.random
-#### Stream._.sll_add
-#### Stream._.sll_forEach
+#### <a name="Stream___isArray">Stream._.isArray
+
+#### <a name="Stream___isObject">Stream._.isObject
+
+#### <a name="Stream___isString">Stream._.isString
+
+#### <a name="Stream___isUndefined">Stream._.isUndefined
+
+#### <a name="Stream___isFunction">Stream._.isFunction
+
+#### <a name="Stream___isNumber">Stream._.isNumber
+
+#### <a name="Stream___isTypedArray">Stream._.isTypedArray
+
+#### <a name="Stream___isArrayBuffer">Stream._.isArrayBuffer
+
+#### <a name="Stream___isError">Stream._.isError
+
+#### <a name="Stream___isPromise">Stream._.isPromise
+
+#### <a name="Stream___size">Stream._.size
+
+#### <a name="Stream___now">Stream._.now
+
+#### <a name="Stream___extend">Stream._.extend
+
+#### <a name="Stream___forEach">Stream._.forEach
+
+#### <a name="Stream___once">Stream._.once
+
+#### <a name="Stream___delay">Stream._.delay
+
+#### <a name="Stream___random">Stream._.random
+
+#### <a name="Stream___sll_add">Stream._.sll_add
+
+#### <a name="Stream___sll_forEach">Stream._.sll_forEach
+
 
