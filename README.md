@@ -4,7 +4,7 @@ Next generation of Stream API for NodeJS
 ### Table of Contents
   
 - [Class: Stream](#Stream)
-  - [Enum: stateType](#Stream_stateType)
+  - [Enum: status](#Stream_status)
   - [Property: state](#Stream_state)
   - [Property: readable](#Stream_readable)
   - [Property: writable](#Stream_writable)
@@ -12,7 +12,7 @@ Next generation of Stream API for NodeJS
   - [Property: isRunning](#Stream_isRunning)
   - [Property: isClosing](#Stream_isClosing)
   - [Property: isClosed](#Stream_isClosed)
-  - [Method: setState(stateType)](#Stream_setState)
+  - [Method: setState(status)](#Stream_setState)
   - [Method: close(callback)](#Stream_close)
   - [Method: open(callback)](#Stream_open)
   - [Method: data(callback)](#Stream_data)
@@ -54,7 +54,7 @@ Next generation of Stream API for NodeJS
 
 ### <a name="Stream">Stream</a>
 
-#### <a name="Stream_stateType">Stream.stateType</a>
+#### <a name="Stream_status">Stream.status</a>
 
 - Stream.OPENING 
 - Stream.RUNNING
@@ -63,73 +63,93 @@ Next generation of Stream API for NodeJS
 
 #### <a name="Stream_state">Stream.state</a>
 
-Returns current state of stream
+Returns current state of stream.
+
+- Returns [Stream.status](#Stream_status)
 
 #### <a name="Stream_readable">Stream.readable</a>
 
 A Boolean indicating whether or not the Stream is readable.
 
+- Returns Boolean
+
 #### <a name="Stream_writable">Stream.writable</a>
 
 A Boolean indicating whether or not the Stream is writable.
+
+- Returns Boolean
 
 #### <a name="Stream_isOpening">Stream.isOpening</a>
 
 A Boolean indicating whether or not the Stream is opening.
 
+- Returns Boolean
+
 #### <a name="Stream_isRunning">Stream.isRunning</a>
 
 A Boolean indicating whether or not the Stream is running.
+
+- Returns Boolean
 
 #### <a name="Stream_isClosing">Stream.isClosing</a>
 
 A Boolean indicating whether or not the Stream is closing.
 
+- Returns Boolean
+
 #### <a name="Stream_isClosed">Stream.isClosed</a>
 
 A Boolean indicating whether or not the Stream is closed.
 
-#### <a name="Stream_setState">Stream.setState(stateType)</a>
+- Returns Boolean
 
-Change the current state of Stream. Argument must be one of the [stateType](#Stream_stateType)
+#### <a name="Stream_setState">Stream.setState(status)</a>
+
+Change the current state of Stream. Argument must be one of the [status](#Stream_status)
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_close">Stream.close(callback)</a>
 
-Add listener for close event.
+Add callback for close event. 
+Callback is invoked when [Stream.state](#Stream.state) is changing to Stream.CLOSED.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_open">Stream.open(callback)</a>
 
-Add listener for open event.
+Add callback for open event.
+If [Stream.state](#Stream.state) is Stream.OPENING callback is added to list to wait for Stream.RUNNING. 
+If [Stream.state](#Stream.state) is Stream.RUNNING or Stream.CLOSING then callback is called immediately.
+Otherwise callback is ignored.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_data">Stream.data(callback)</a>
 
-Add listener for data event.
+Add callback for data event.
+Callback is invoked when [Stream.push](#Stream_push) is called.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_drain">Stream.drain(callback)</a>
 
-Add listener for drain event. 
-After drain is called. The listener is removed from future events so it must be added again. 
+Add callback for drain event. 
+After drain is invoked. The callback is removed from future events so it must be added again to reuse the callback. 
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_resume">Stream.resume(callback)</a>
 
-Add listener for Resume event.
-Resume is called once when current threshold is dropping below of Stream.maxThresholdSize value.
+Add callback for Resume event.
+Resume is invoked once when current threshold is dropping below of Stream.maxThresholdSize value.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_pause">Stream.pause(callback)</a>
 
-Add listener for pause event. Pause is called once when current threshold is more than Stream.maxThresholdSize value.
+Add callback for pause event. 
+Pause is invoked once when current threshold is more than Stream.maxThresholdSize value.
 
 - Returns [Stream](#Stream)
 
@@ -160,25 +180,65 @@ Otherwise end is waiting for drain event and after drain this Promise is resolve
 
 ### <a name="Stream__">Stream._</a>
 
-#### <a name="Stream___isArray">Stream._.isArray</a>
+#### <a name="Stream___isArray">Stream._.isArray(arg)</a>
 
-#### <a name="Stream___isObject">Stream._.isObject</a>
+A Boolean indicating whether or not the argument is Array.
 
-#### <a name="Stream___isString">Stream._.isString</a>
+- Returns Boolean
 
-#### <a name="Stream___isUndefined">Stream._.isUndefined</a>
+#### <a name="Stream___isObject">Stream._.isObject(arg)</a>
 
-#### <a name="Stream___isFunction">Stream._.isFunction</a>
+A Boolean indicating whether or not the argument is Object.
 
-#### <a name="Stream___isNumber">Stream._.isNumber</a>
+- Returns Boolean
 
-#### <a name="Stream___isTypedArray">Stream._.isTypedArray</a>
+#### <a name="Stream___isString">Stream._.isString(arg)</a>
 
-#### <a name="Stream___isArrayBuffer">Stream._.isArrayBuffer</a>
+A Boolean indicating whether or not the argument is String.
 
-#### <a name="Stream___isError">Stream._.isError</a>
+- Returns Boolean
 
-#### <a name="Stream___isPromise">Stream._.isPromise</a>
+#### <a name="Stream___isUndefined">Stream._.isUndefined(arg)</a>
+
+A Boolean indicating whether or not the argument is Undefined.
+
+- Returns Boolean
+
+#### <a name="Stream___isFunction">Stream._.isFunction(arg)</a>
+
+A Boolean indicating whether or not the argument is Function.
+
+- Returns Boolean
+
+#### <a name="Stream___isNumber">Stream._.isNumber(arg)</a>
+
+A Boolean indicating whether or not the argument is Number.
+
+- Returns Boolean
+
+#### <a name="Stream___isTypedArray">Stream._.isTypedArray(arg)</a>
+
+A Boolean indicating whether or not the argument is TypedArray.
+
+- Returns Boolean
+
+#### <a name="Stream___isArrayBuffer">Stream._.isArrayBuffer(arg)</a>
+
+A Boolean indicating whether or not the argument is ArrayBuffer.
+
+- Returns Boolean
+
+#### <a name="Stream___isError">Stream._.isError(arg)</a>
+
+A Boolean indicating whether or not the argument is Error.
+
+- Returns Boolean
+
+#### <a name="Stream___isPromise">Stream._.isPromise(arg)</a>
+
+A Boolean indicating whether or not the argument is Promise-like.
+
+- Returns Boolean
 
 #### <a name="Stream___size">Stream._.size</a>
 
