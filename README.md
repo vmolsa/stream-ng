@@ -111,16 +111,17 @@ Change the current state of Stream. Argument must be one of the [Stream.status](
 
 #### <a name="Stream_close">Stream.close(callback)</a>
 
-Add callback for close event. 
-Callback is invoked when [Stream.state](#Stream_state) is changing to Stream.CLOSED.
+Add callback for close event.
+If [Stream.state](#Stream_state) is not [Stream.CLOSED](#Stream_status) callback is added to list to wait for [Stream.CLOSED](#Stream_status).
+Otherwise callback is invoked immediately.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_open">Stream.open(callback)</a>
 
 Add callback for open event.
-If [Stream.state](#Stream_state) is Stream.OPENING callback is added to list to wait for Stream.RUNNING. 
-If [Stream.state](#Stream_state) is Stream.RUNNING or Stream.CLOSING then callback is called immediately.
+If [Stream.state](#Stream_state) is [Stream.OPENING](#Stream_status) callback is added to list to wait for [Stream.RUNNING](#Stream_status). 
+If [Stream.state](#Stream_state) is [Stream.RUNNING](#Stream_status) or [Stream.CLOSING](#Stream_status) then callback is called immediately.
 Otherwise callback is ignored.
 
 - Returns [Stream](#Stream)
