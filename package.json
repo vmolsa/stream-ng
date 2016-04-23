@@ -1,0 +1,12 @@
+{
+  "name": "stream-ng",
+  "description": "Next generation of Stream API for NodeJS",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmolsa/stream-ng"
+  },
+  "author": "vmolsa <ville.molsa@gmail.com> (http://github.com/vmolsa)"
+}
