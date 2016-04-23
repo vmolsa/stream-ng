@@ -1,4 +1,5 @@
 # Stream-NG
+
 Next generation of Stream API for NodeJS
 
 ### Table of Contents
@@ -49,8 +50,8 @@ Next generation of Stream API for NodeJS
   - [Static: once(callback[, this)](#Stream___once)
   - [Static: delay(callback[, arg]](#Stream___delay)
   - [Static: random()](#Stream___random)
-  - [Static: sll_add(list, arg)](#Stream___sll_add)
-  - [Static: sll_forEach(list, callback)](#Stream___sll_forEach)
+  - [Static: sll_add(collection, arg)](#Stream___sll_add)
+  - [Static: sll_forEach(collection, callback)](#Stream___sll_forEach)
 
 ### <a name="Stream">Stream</a>
 
@@ -70,12 +71,14 @@ Returns current state of stream.
 #### <a name="Stream_readable">Stream.readable</a>
 
 A Boolean indicating whether or not the Stream is readable.
+See [Stream.data](#Stream_data).
 
 - Returns Boolean
 
 #### <a name="Stream_writable">Stream.writable</a>
 
 A Boolean indicating whether or not the Stream is writable.
+See [Stream](#Stream).
 
 - Returns Boolean
 
@@ -111,7 +114,6 @@ Change the current state of Stream. Argument must be one of the [Stream.status](
 
 #### <a name="Stream_close">Stream.close(callback)</a>
 
-Add callback for close event.
 If [Stream.state](#Stream_state) is not [Stream.CLOSED](#Stream_status) callback is added to list to wait for [Stream.CLOSED](#Stream_status).
 Otherwise callback is invoked immediately.
 
@@ -119,7 +121,6 @@ Otherwise callback is invoked immediately.
 
 #### <a name="Stream_open">Stream.open(callback)</a>
 
-Add callback for open event.
 If [Stream.state](#Stream_state) is [Stream.OPENING](#Stream_status) callback is added to list to wait for [Stream.RUNNING](#Stream_status). 
 If [Stream.state](#Stream_state) is [Stream.RUNNING](#Stream_status) or [Stream.CLOSING](#Stream_status) then callback is called immediately.
 Otherwise callback is ignored.
@@ -128,29 +129,26 @@ Otherwise callback is ignored.
 
 #### <a name="Stream_data">Stream.data(callback)</a>
 
-Add callback for data event.
+Enables [Stream.readable](#Stream_readable) mode.
 Callback is invoked when [Stream.push](#Stream_push) is called.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_drain">Stream.drain(callback)</a>
 
-Add callback for drain event. 
-After drain is invoked. The callback is removed from future events so it must be added again to reuse the callback. 
+After drain is invoked. The callback is removed from future callbacks so it must be added again to reuse the callback. 
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_resume">Stream.resume(callback)</a>
 
-Add callback for Resume event.
-Resume is invoked once when current threshold is dropping below of Stream.maxThresholdSize value.
+Resume is invoked once when current threshold is dropping below of [Stream.maxThresholdSize](#Stream) value.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_pause">Stream.pause(callback)</a>
 
-Add callback for pause event. 
-Pause is invoked once when current threshold is more than Stream.maxThresholdSize value.
+Pause is invoked once when current threshold is more than [Stream.maxThresholdSize](#Stream) value.
 
 - Returns [Stream](#Stream)
 
@@ -163,23 +161,84 @@ Otherwise end is waiting for drain event and after drain this Promise is resolve
 
 #### <a name="Stream_write">Stream.write(chunk[, callback])</a>
 
+Adds chunk to write queue.
+If Stream is not in objectMode then chunk must be ArrayBuffer or TypedArray.
+If [Stream is writable](#Stream_writable) [Stream._write](#Stream) is invoked. 
+If error is occurred on write() then Stream is rejected with that error except on when callback function is defined.
+
+- Returns [Stream](#Stream)
+
 #### <a name="Stream_push">Stream.push(chunk[, callback])</a>
+
+If [Stream is readable](#Stream_readable) then [Stream.data()](#Stream_data) callbacks are invoked. 
+If Stream is not in objectMode then chunk must be ArrayBuffer or TypedArray.
+If error is occurred on push() then Stream is rejected with that error except on when callback function is defined.
+
+- Returns [Stream](#Stream)
 
 #### <a name="Stream_pair">Stream.pair(Stream|Node Stream|Promise[, options])</a>
 
+Same as [Pipe](https://nodejs.org/api/stream.html#stream_readable_pipe_destination_options) but connects stream to both ways.
+
+```js
+var socket1 = new Socket();
+var socket2 = new Socket();
+
+socket1.pair(socket2);
+```
+
+```js
+var socket1 = new Socket();
+var socket2 = new Socket();
+
+socket1.pipe(socket2).pipe(socket1);
+```
+
+- Returns [Stream](#Stream)
+
 ### <a name="Stream_Promise">Stream.Promise</a>
+
+The Promise object is used for deferred and asynchronous computations. 
+A Promise represents an operation that hasn't completed yet, but is expected in the future.
+
+```js
+new Promise(function(resolve, reject) {});
+```
 
 #### <a name="Stream_Promise_then">Stream.Promise.then(onFulfilled, onRejected)</a>
 
+The then() method returns a Promise. 
+It takes two arguments: callback functions for the success and failure cases of the Promise.
+
+- Returns [Stream.Promise](#Stream_Promise)
+
 #### <a name="Stream_Promise_catch">Stream.Promise.catch(onRejected)</a>
+
+The catch() method returns a Promise and deals with rejected cases only. 
+It behaves the same as calling Promise.then(undefined, onRejected).
+
+- Returns [Stream.Promise](#Stream_Promise)
 
 #### <a name="Stream_Promise_finally">Stream.Promise.finally(onResolved)</a>
 
+Allows you to observe either the fulfillment or rejection of a promise, but to do so without modifying the final value.
+This is useful to release resources or do some clean-up that needs to be done whether the promise was rejected or resolved.
+
+- Returns [Stream.Promise](#Stream_Promise)
+
 #### <a name="Stream_Promise_all">Stream.Promise.all(iterable)</a>
+
+- Returns [Stream.Promise](#Stream_Promise)
 
 #### <a name="Stream_Promise_forEach">Stream.Promise.forEach(iterable, callback)</a>
 
+- Returns [Stream.Promise](#Stream_Promise)
+
 ### <a name="Stream__">Stream._</a>
+
+Basic underscore library.
+
+- Returns Object
 
 #### <a name="Stream___isArray">Stream._.isArray(arg)</a>
 
@@ -241,22 +300,55 @@ A Boolean indicating whether or not the argument is Promise-like.
 
 - Returns Boolean
 
-#### <a name="Stream___size">Stream._.size</a>
+#### <a name="Stream___size">Stream._.size(collection)</a>
 
-#### <a name="Stream___now">Stream._.now</a>
+Gets the size of collection by returning its length for array-like values or the number of own enumerable string keyed properties for objects.
 
-#### <a name="Stream___extend">Stream._.extend</a>
+- Returns the collection size.
 
-#### <a name="Stream___forEach">Stream._.forEach</a>
+#### <a name="Stream___now">Stream._.now()</a>
 
-#### <a name="Stream___once">Stream._.once</a>
+Gets the timestamp of the number of milliseconds that have elapsed since the Unix epoch (1 January 1970 00:00:00 UTC).
 
-#### <a name="Stream___delay">Stream._.delay</a>
+- Returns the timestamp.
 
-#### <a name="Stream___random">Stream._.random</a>
+#### <a name="Stream___extend">Stream._.extend(dst, src)</a>
 
-#### <a name="Stream___sll_add">Stream._.sll_add</a>
+Expand the object with another object.
 
-#### <a name="Stream___sll_forEach">Stream._.sll_forEach</a>
+- Returns Object
 
+#### <a name="Stream___forEach">Stream._.forEach(collection, callback)</a>
+
+Iterates over elements of collection and invokes callback for each element. The iteratee is invoked with arguments: (value, index|key).
+
+- Returns collection
+
+#### <a name="Stream___once">Stream._.once(callback, self)</a>
+
+Creates new function that invokes callback only once.
+
+- Returns Function
+
+#### <a name="Stream___delay">Stream._.delay(callback[, arg])</a>
+
+Once the current event loop turn runs to completion, the callback function is invoked.
+
+#### <a name="Stream___random">Stream._.random()</a>
+
+Creates random number.
+
+- Returns number
+
+#### <a name="Stream___sll_add">Stream._.sll_add(collection, arg)</a>
+
+Add Element to Singly Linked List.
+
+- Returns collection
+
+#### <a name="Stream___sll_forEach">Stream._.sll_forEach(collection, callback)</a>
+
+Method executes a provided callback once per collection element.
+
+- Returns collection
 
