@@ -55,9 +55,23 @@ Next generation of Stream API for NodeJS
 
 ### <a name="Stream">Stream</a>
 
+```js
+new Stream({
+  maxThresholdSize: 16384,
+  objectMode: false,
+  state: Stream.RUNNING,
+  _write: function(chunk, next) {
+    // Enables writable mode.
+    // send chunk to socket or write chunk to file. 
+    // Call next() when the current chunk is consumed or error is occurred: next(error);
+    next();
+  },
+});
+```
+
 #### <a name="Stream_status">Stream.status</a>
 
-- Stream.OPENING 
+- Stream.OPENING
 - Stream.RUNNING
 - Stream.CLOSING
 - Stream.CLOSED
@@ -215,7 +229,7 @@ It takes two arguments: callback functions for the success and failure cases of 
 #### <a name="Stream_Promise_catch">Stream.Promise.catch(onRejected)</a>
 
 The catch() method returns a Promise and deals with rejected cases only. 
-It behaves the same as calling Promise.then(undefined, onRejected).
+It behaves the same as calling Stream.Promise.then(undefined, onRejected).
 
 - Returns [Stream.Promise](#Stream_Promise)
 
@@ -228,9 +242,14 @@ This is useful to release resources or do some clean-up that needs to be done wh
 
 #### <a name="Stream_Promise_all">Stream.Promise.all(iterable)</a>
 
+The Promise.all() returns a promise that resolves when all of the promises in the iterable argument have resolved, or rejects with the reason of the first passed promise that rejects.
+
 - Returns [Stream.Promise](#Stream_Promise)
 
 #### <a name="Stream_Promise_forEach">Stream.Promise.forEach(iterable, callback)</a>
+
+Iterates over elements of collection and invokes callback for each element.
+Each element creates new [Promise()](#Stream_Promise) and the callback is invoked with arguments: (resolve, reject, value, index|key).
 
 - Returns [Stream.Promise](#Stream_Promise)
 
