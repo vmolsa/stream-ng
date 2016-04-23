@@ -105,22 +105,22 @@ A Boolean indicating whether or not the Stream is closed.
 
 #### <a name="Stream_setState">Stream.setState(status)</a>
 
-Change the current state of Stream. Argument must be one of the [status](#Stream_status)
+Change the current state of Stream. Argument must be one of the [Stream.status](#Stream_status)
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_close">Stream.close(callback)</a>
 
 Add callback for close event. 
-Callback is invoked when [Stream.state](#Stream.state) is changing to Stream.CLOSED.
+Callback is invoked when [Stream.state](#Stream_state) is changing to Stream.CLOSED.
 
 - Returns [Stream](#Stream)
 
 #### <a name="Stream_open">Stream.open(callback)</a>
 
 Add callback for open event.
-If [Stream.state](#Stream.state) is Stream.OPENING callback is added to list to wait for Stream.RUNNING. 
-If [Stream.state](#Stream.state) is Stream.RUNNING or Stream.CLOSING then callback is called immediately.
+If [Stream.state](#Stream_state) is Stream.OPENING callback is added to list to wait for Stream.RUNNING. 
+If [Stream.state](#Stream_state) is Stream.RUNNING or Stream.CLOSING then callback is called immediately.
 Otherwise callback is ignored.
 
 - Returns [Stream](#Stream)
