@@ -563,12 +563,14 @@ Stream.prototype.end = function(arg) {
       self.drain(function() {
         self._resolve(arg);
       });
-    } else {
+    } else if (self.state & STREAM_OPENING) {
       self.open(function() {
         self.drain(function() {
           self._resolve(arg);
         });
       });
+    } else {
+      self._resolve(arg);
     }
   }
   
