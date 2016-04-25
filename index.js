@@ -120,12 +120,13 @@ function Promise(callback) {
         self.pending = false;
         self.fulfilled = false;
         self.rejected = true;
+        self.onresolve = null;
         
         _.sll_forEach(self.onreject, function(callback) {
           callback.call(self, arg);
         });
         
-        self.destroy(arg);
+        self.onreject = null;
       }
     });
   }
@@ -143,6 +144,7 @@ function Promise(callback) {
           self.pending = false;
           self.fulfilled = true;
           self.rejected = false;
+          self.onreject = null;
           
           _.sll_forEach(self.onresolve, function(callback) {
             try {
@@ -152,7 +154,7 @@ function Promise(callback) {
             }
           });
 
-          self.destroy();
+          self.onresolve = null;
         }
       });
     }
@@ -167,11 +169,6 @@ function Promise(callback) {
   } else {
     throw new Error('Promise resolver ' + typeof(callback) + ' is not a function');
   }
-}
-
-Promise.prototype.destroy = function() {
-  this.onresolve = null;
-  this.onreject = null;
 }
 
 Promise.prototype.then = function(onResolve, onReject) {  
@@ -333,6 +330,20 @@ function Stream(options) {
   if (_.isFunction(options.write)) {
     self._write = options.write;
   }
+  
+  self.finally(function() {
+    self.heap = null;
+    self.tail = null;
+    self.threshold = 0;
+    self.state = STREAM_CLOSED;
+    
+    self.onopen = null;
+    self.onclose = null;
+    self.ondata = null;
+    self.ondrain = null;
+    self.onpause = null;
+    self.onresume = null;
+  });
 }
 
 Object.setPrototypeOf(Stream.prototype, Promise.prototype);
@@ -400,22 +411,6 @@ Object.defineProperty(Stream, 'CLOSED', {
   writable: false,
   value: STREAM_CLOSED,
 });
-
-Stream.prototype.destroy = function(error) {  
-  this.heap = null;
-  this.tail = null;
-  this.threshold = 0;
-  this.state = STREAM_CLOSED;
-  
-  this.onopen = null;
-  this.onclose = null;
-  this.ondata = null;
-  this.ondrain = null;
-  this.onpause = null;
-  this.onresume = null;
-  
-  return Promise.prototype.destroy.call(this, error);
-};
 
 Stream.prototype.setState = function(state) {
   var self = this;
@@ -551,6 +546,7 @@ Stream.prototype.end = function(arg) {
   var self = this;
   
   if (_.isError(arg)) {
+    self.setState(STREAM_CLOSED);
     self._reject(arg);
   } else if (_.isPromise(arg)) {
     arg.then(function(reply) {
@@ -561,11 +557,13 @@ Stream.prototype.end = function(arg) {
   } else {
     if (self.state & (STREAM_RUNNING | STREAM_CLOSING)) {      
       self.drain(function() {
+        self.setState(STREAM_CLOSED);
         self._resolve(arg);
       });
     } else if (self.state & STREAM_OPENING) {
       self.open(function() {
         self.drain(function() {
+          self.setState(STREAM_CLOSED);
           self._resolve(arg);
         });
       });
