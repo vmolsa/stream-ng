@@ -352,25 +352,25 @@ Object.defineProperty(Stream.prototype, 'writable', {
 Object.defineProperty(Stream.prototype, 'isOpening', {
   enumerable: true,
   configurable: true,
-  get: function() { return (this.pending && this.state & STREAM_OPENING); },  
+  get: function() { return (this.state & STREAM_OPENING) ? true : false; },  
 });
 
 Object.defineProperty(Stream.prototype, 'isRunning', {
   enumerable: true,
   configurable: true,
-  get: function() { return (this.pending && this.state & STREAM_RUNNING) ? true : false; },   
+  get: function() { return (this.state & STREAM_RUNNING) ? true : false; },   
 });
 
 Object.defineProperty(Stream.prototype, 'isClosing', {
   enumerable: true,
   configurable: true,
-  get: function() { return (this.pending && this.state & STREAM_CLOSING) ? true : false; },   
+  get: function() { return (this.state & STREAM_CLOSING) ? true : false; },   
 });
 
 Object.defineProperty(Stream.prototype, 'isClosed', {
   enumerable: true,
   configurable: true,
-  get: function() { return (this.pending && this.state & STREAM_CLOSED) ? true : false; },    
+  get: function() { return (this.state & STREAM_CLOSED) ? true : false; },    
 });
 
 Object.defineProperty(Stream, 'OPENING', {
