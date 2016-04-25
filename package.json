@@ -1,7 +1,7 @@
 {
   "name": "stream-ng",
   "description": "Next generation of Stream API for NodeJS",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./index.js",
   "license": "MIT",
   "repository": {
