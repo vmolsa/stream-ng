@@ -618,7 +618,7 @@ Stream.prototype.write = function(chunk, callback) {
           self.heap ? doWrite(self) : _.delay(function(self) {
             doWrite(self);
           }, self);
-        });
+        }, self);
         
         try {        
           return self._write.call(self, data.chunk, afterWrite);
@@ -720,13 +720,13 @@ Stream.prototype.push = function(chunk, callback) {
   var afterPush;
   
   if (_.isFunction(callback)) {
-    afterPush = _.once(callback);
+    afterPush = _.once(callback, self);
   } else {
     afterPush = _.once(function(error) {
       if (error) {
         self.end(error);
       }
-    });
+    }, self);
   }
   
   if (!_.isTypedArray(chunk) && !_.isArrayBuffer(chunk) && !self.objectMode) {
@@ -735,13 +735,13 @@ Stream.prototype.push = function(chunk, callback) {
   }
   
   if (self.readable) {
-    for (var index = self.ondata; index; index = index.next) {
+    _.sll_forEach(self.ondata, function(onData) {
       try {
-        index.callback.call(self, chunk, afterPush);
+        onData.call(self, chunk, afterPush);
       } catch(error) {
-        return self.end(error);
+        afterPush(error);
       }
-    }
+    });
   } else {
     afterPush(new Error('Stream is not readable.'));
   }
