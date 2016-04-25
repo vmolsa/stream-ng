@@ -201,8 +201,8 @@ Promise.prototype.catch = function(onReject) {
 Promise.prototype.finally = function(onResolve) {  
   return this.then(function(arg) {
     onResolve(arg);
-  }, function() {
-    onResolve(arg);
+  }, function(error) {
+    onResolve(error);
   });
 };
 
