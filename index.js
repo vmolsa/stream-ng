@@ -74,9 +74,9 @@ var _ = {
     return collection;
   },
   once: function(callback, self) {
-    return function(arg) {      
-      if (callback) {
-        callback.apply(self || this, arg);
+    return function(arg) {     
+      if (_.isFunction(callback)) {
+        callback.call(self || this, arg);
       }
       
       callback = undefined;
@@ -717,17 +717,16 @@ Stream.prototype.write = function(chunk, callback) {
 
 Stream.prototype.push = function(chunk, callback) {
   var self = this;
-  var afterPush;
   
-  if (_.isFunction(callback)) {
-    afterPush = _.once(callback, self);
-  } else {
-    afterPush = _.once(function(error) {
-      if (error) {
-        self.end(error);
-      }
-    }, self);
-  }
+  var afterPush = _.once(function(error) {    
+    if (_.isFunction(callback)) {
+      return callback.call(self, error);
+    }
+    
+    if (error) {
+      self.end(error);
+    }
+  });
   
   if (!_.isTypedArray(chunk) && !_.isArrayBuffer(chunk) && !self.objectMode) {
     afterPush(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));    
