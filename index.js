@@ -346,6 +346,11 @@ function Stream(options) {
   });
 }
 
+Object.setPrototypeOf = Object.setPrototypeOf || function(obj, proto) {
+  obj.__proto__ = proto;
+  return obj; 
+}
+
 Object.setPrototypeOf(Stream.prototype, Promise.prototype);
 
 Object.defineProperty(Stream.prototype, 'readable', {
