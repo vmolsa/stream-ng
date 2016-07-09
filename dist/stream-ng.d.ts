@@ -44,8 +44,8 @@ export declare class StreamNg extends SimplePromise {
     private _onresume;
     private _onpause;
     private _data;
-    private _write;
     private _waiting;
+    protected _write: dataCallback;
     constructor(options?: StreamOptions);
     readable: boolean;
     writable: boolean;
