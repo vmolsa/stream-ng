@@ -6,11 +6,11 @@
  *
  */
 
-declare type onResolve = (arg:any) => void;
-declare type onReject = (error:any) => void;
-declare type notifyCallback = () => void;
-declare type errorCallback = (error?:Error) => void;
-declare type dataCallback = (chunk:any, next:errorCallback) => void;
+export declare type onResolve = (arg:any) => void;
+export declare type onReject = (error:any) => void;
+export declare type notifyCallback = () => void;
+export declare type errorCallback = (error?:Error) => void;
+export declare type dataCallback = (chunk:any, next:errorCallback) => void;
 
 var global = this;
 
@@ -95,21 +95,21 @@ export class SimplePromise {
   }
 }
 
-enum StreamStates {
+export enum StreamStates {
   OPENING = 1 << 1,
   RUNNING = 1 << 2,
   CLOSING = 1 << 3,
   CLOSED = 1 << 4,
 }
 
-interface StreamOptions {
+export interface StreamOptions {
   maxThresholdSize?: number;
   objectMode?: boolean;
   state: StreamStates;
   write: dataCallback;
 }
 
-interface StreamData {
+export interface StreamData {
   chunk: any,
   callback?: errorCallback,
 }

@@ -97,13 +97,13 @@ var SimplePromise = (function () {
     return SimplePromise;
 }());
 exports.SimplePromise = SimplePromise;
-var StreamStates;
 (function (StreamStates) {
     StreamStates[StreamStates["OPENING"] = 2] = "OPENING";
     StreamStates[StreamStates["RUNNING"] = 4] = "RUNNING";
     StreamStates[StreamStates["CLOSING"] = 8] = "CLOSING";
     StreamStates[StreamStates["CLOSED"] = 16] = "CLOSED";
-})(StreamStates || (StreamStates = {}));
+})(exports.StreamStates || (exports.StreamStates = {}));
+var StreamStates = exports.StreamStates;
 var StreamNg = (function (_super) {
     __extends(StreamNg, _super);
     function StreamNg(options) {
