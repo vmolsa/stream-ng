@@ -126,8 +126,9 @@ export class StreamNg extends SimplePromise {
   private _onresume: Array<notifyCallback> = new Array<notifyCallback>();
   private _onpause: Array<notifyCallback> = new Array<notifyCallback>();
   private _data: Array<StreamData> = new Array<StreamData>();
-  private _write: dataCallback;
   private _waiting: boolean = false;
+
+  protected _write: dataCallback;
 
   constructor(options?:StreamOptions) {
     super();
