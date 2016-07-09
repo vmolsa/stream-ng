@@ -25,8 +25,8 @@ export declare enum StreamStates {
 export interface StreamOptions {
     maxThresholdSize?: number;
     objectMode?: boolean;
-    state: StreamStates;
-    write: dataCallback;
+    state?: StreamStates;
+    write?: dataCallback;
 }
 export interface StreamData {
     chunk: any;
