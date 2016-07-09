@@ -1,8 +1,9 @@
+export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type onResolve = (arg: any) => void;
 export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
-export declare type dataCallback = (chunk: any, next: errorCallback) => void;
+export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
 export declare class SimplePromise {
     private _fulfilled;
     private _rejected;
@@ -29,7 +30,7 @@ export interface StreamOptions {
     write?: dataCallback;
 }
 export interface StreamData {
-    chunk: any;
+    chunk: TypedArray;
     callback?: errorCallback;
 }
 export declare class StreamNg extends SimplePromise {
@@ -63,8 +64,8 @@ export declare class StreamNg extends SimplePromise {
     data(callback: dataCallback): StreamNg;
     end(arg?: any): StreamNg;
     private dispatchQueue();
-    write(chunk: any, callback?: errorCallback): StreamNg;
-    push(chunk: any, callback?: errorCallback): StreamNg;
+    write(chunk: TypedArray, callback?: errorCallback): StreamNg;
+    push(chunk: TypedArray, callback?: errorCallback): StreamNg;
     pair(dst: any, options: any): StreamNg;
 }
 export default StreamNg;

@@ -376,21 +376,7 @@ var StreamNg = (function (_super) {
         var self = this;
         if (self.writable) {
             if (!self._objectMode) {
-                if (!(chunk instanceof ArrayBuffer) && !ArrayBuffer.isView(chunk)) {
-                    if (callback) {
-                        try {
-                            callback(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));
-                        }
-                        catch (error) {
-                            self.end(error);
-                        }
-                    }
-                    else {
-                        self.end(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));
-                    }
-                    return self;
-                }
-                chunk = new Uint8Array(chunk);
+                chunk = new Uint8Array(chunk.buffer);
             }
             var data = {
                 chunk: chunk,
@@ -454,10 +440,6 @@ var StreamNg = (function (_super) {
                 self.end(error);
             }
         }, self);
-        if (!(chunk instanceof ArrayBuffer) && !ArrayBuffer.isView(chunk) && !self._objectMode) {
-            afterPush(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));
-            return self;
-        }
         if (self.readable) {
             self._ondata.forEach(function (onData) {
                 try {

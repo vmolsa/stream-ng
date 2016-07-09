@@ -6,11 +6,12 @@
  *
  */
 
-export declare type onResolve = (arg:any) => void;
-export declare type onReject = (error:any) => void;
+export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
+export declare type onResolve = (arg: any) => void;
+export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
-export declare type errorCallback = (error?:Error) => void;
-export declare type dataCallback = (chunk:any, next:errorCallback) => void;
+export declare type errorCallback = (error?: Error) => void;
+export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
 
 var global = this;
 
@@ -70,7 +71,7 @@ export class SimplePromise {
     return this;
   }
 
-  public then(onFulfilled:onResolve, onRejected?:onReject): SimplePromise {
+  public then(onFulfilled: onResolve, onRejected?: onReject): SimplePromise {
     if (this.pending) {
       if (onFulfilled) {
         this._onresolve.push(onFulfilled);
@@ -84,7 +85,7 @@ export class SimplePromise {
     return this;
   }
 
-  public catch(onRejected:onReject): SimplePromise {
+  public catch(onRejected: onReject): SimplePromise {
     if (this.pending) {
       if (onRejected) {
         this._onreject.push(onRejected);
@@ -110,7 +111,7 @@ export interface StreamOptions {
 }
 
 export interface StreamData {
-  chunk: any,
+  chunk: TypedArray,
   callback?: errorCallback,
 }
 
@@ -378,26 +379,12 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public write(chunk:any, callback?:errorCallback): StreamNg {
+  public write(chunk: TypedArray, callback?:errorCallback): StreamNg {
     var self = this;
    
     if (self.writable) {
       if (!self._objectMode) {
-        if (!(chunk instanceof ArrayBuffer) && !ArrayBuffer.isView(chunk)) {
-          if (callback) {
-            try {
-              callback(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));
-            } catch (error) {
-              self.end(error);
-            }
-          } else {
-            self.end(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));
-          }
-          
-          return self;
-        }
-        
-        chunk = new Uint8Array(chunk);
+        chunk = new Uint8Array(chunk.buffer);
       }
       
       var data: StreamData = {
@@ -453,7 +440,7 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public push(chunk:any, callback?:errorCallback): StreamNg {
+  public push(chunk: TypedArray, callback?:errorCallback): StreamNg {
     var self = this;
   
     var afterPush = once((error) => {    
@@ -465,12 +452,7 @@ export class StreamNg extends SimplePromise {
         self.end(error);
       }
     }, self);
-  
-    if (!(chunk instanceof ArrayBuffer) && !ArrayBuffer.isView(chunk) && !self._objectMode) {
-      afterPush(new TypeError('Invalid chunk. TypedArray / ArrayBuffer Supported.'));    
-      return self;
-    }
-  
+
     if (self.readable) {
       self._ondata.forEach((onData) => {
         try {
@@ -526,7 +508,7 @@ export class StreamNg extends SimplePromise {
         }
         
         if (self.writable) {
-          dst.data((chunk:any, next:errorCallback) => {
+          dst.data((chunk: TypedArray, next: errorCallback) => {
             self.write(chunk, next);
           });
         }         
