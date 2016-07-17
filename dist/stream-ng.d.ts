@@ -12,8 +12,8 @@ export declare class Promise {
     pending: boolean;
     fulfilled: boolean;
     rejected: boolean;
-    _resolve(arg: any): Promise;
-    _reject(error: any): Promise;
+    protected _resolve(arg: any): Promise;
+    protected _reject(error: any): Promise;
     then(onFulfilled: onResolve, onRejected?: onReject): Promise;
     catch(onRejected: onReject): Promise;
 }

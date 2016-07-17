@@ -43,7 +43,7 @@ export class Promise {
     return this._rejected;
   }
 
-  public _resolve(arg:any): Promise {
+  protected _resolve(arg:any): Promise {
     setImmediate((self: Promise, arg:any) => {
       if (self.pending) {
         self._fulfilled = true;
@@ -57,7 +57,7 @@ export class Promise {
     return this;
   }
 
-  public _reject(error:any): Promise {
+  protected _reject(error:any): Promise {
     setImmediate((self: Promise, error:any) => {
       if (self.pending) {
         self._rejected = true;
