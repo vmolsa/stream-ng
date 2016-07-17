@@ -4,7 +4,7 @@ export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
-export declare class SimplePromise {
+export declare class Promise {
     private _fulfilled;
     private _rejected;
     private _onresolve;
@@ -12,28 +12,28 @@ export declare class SimplePromise {
     pending: boolean;
     fulfilled: boolean;
     rejected: boolean;
-    _resolve(arg: any): SimplePromise;
-    _reject(error: any): SimplePromise;
-    then(onFulfilled: onResolve, onRejected?: onReject): SimplePromise;
-    catch(onRejected: onReject): SimplePromise;
+    _resolve(arg: any): Promise;
+    _reject(error: any): Promise;
+    then(onFulfilled: onResolve, onRejected?: onReject): Promise;
+    catch(onRejected: onReject): Promise;
 }
-export declare enum StreamStates {
+export declare enum State {
     OPENING = 2,
     RUNNING = 4,
     CLOSING = 8,
     CLOSED = 16,
 }
-export interface StreamOptions {
+export interface Options {
     maxThresholdSize?: number;
     objectMode?: boolean;
-    state?: StreamStates;
+    state?: State;
     write?: dataCallback;
 }
-export interface StreamData {
+export interface Data {
     chunk: TypedArray;
     callback?: errorCallback;
 }
-export declare class StreamNg extends SimplePromise {
+export declare class Stream extends Promise {
     private _maxThresholdSize;
     private _threshold;
     private _objectMode;
@@ -47,25 +47,24 @@ export declare class StreamNg extends SimplePromise {
     private _data;
     private _waiting;
     protected _write: dataCallback;
-    constructor(options?: StreamOptions);
+    constructor(options?: Options);
     readable: boolean;
     writable: boolean;
     isOpening: boolean;
     isRunning: boolean;
     isClosing: boolean;
     isClosed: boolean;
-    state: StreamStates;
-    setState(state: StreamStates): StreamNg;
-    open(callback: notifyCallback): StreamNg;
-    close(callback: notifyCallback): StreamNg;
-    pause(callback: notifyCallback): StreamNg;
-    resume(callback: notifyCallback): StreamNg;
-    drain(callback: notifyCallback): StreamNg;
-    data(callback: dataCallback): StreamNg;
-    end(arg?: any): StreamNg;
+    state: State;
+    setState(state: State): Stream;
+    open(callback: notifyCallback): Stream;
+    close(callback: notifyCallback): Stream;
+    pause(callback: notifyCallback): Stream;
+    resume(callback: notifyCallback): Stream;
+    drain(callback: notifyCallback): Stream;
+    data(callback: dataCallback): Stream;
+    end(arg?: any): Stream;
     private dispatchQueue();
-    write(chunk: TypedArray, callback?: errorCallback): StreamNg;
-    push(chunk: TypedArray, callback?: errorCallback): StreamNg;
-    pair(dst: any, options: any): StreamNg;
+    write(chunk: TypedArray, callback?: errorCallback): Stream;
+    push(chunk: TypedArray, callback?: errorCallback): Stream;
+    pair(dst: any, options: any): Stream;
 }
-export default StreamNg;

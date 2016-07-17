@@ -25,35 +25,35 @@ function once(callback, self) {
         callback = undefined;
     };
 }
-var SimplePromise = (function () {
-    function SimplePromise() {
+var Promise = (function () {
+    function Promise() {
         this._fulfilled = false;
         this._rejected = false;
         this._onresolve = new Array();
         this._onreject = new Array();
     }
-    Object.defineProperty(SimplePromise.prototype, "pending", {
+    Object.defineProperty(Promise.prototype, "pending", {
         get: function () {
             return (!this._fulfilled && !this._rejected);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SimplePromise.prototype, "fulfilled", {
+    Object.defineProperty(Promise.prototype, "fulfilled", {
         get: function () {
             return this._fulfilled;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SimplePromise.prototype, "rejected", {
+    Object.defineProperty(Promise.prototype, "rejected", {
         get: function () {
             return this._rejected;
         },
         enumerable: true,
         configurable: true
     });
-    SimplePromise.prototype._resolve = function (arg) {
+    Promise.prototype._resolve = function (arg) {
         setImmediate(function (self, arg) {
             if (self.pending) {
                 self._fulfilled = true;
@@ -64,7 +64,7 @@ var SimplePromise = (function () {
         }, this, arg);
         return this;
     };
-    SimplePromise.prototype._reject = function (error) {
+    Promise.prototype._reject = function (error) {
         setImmediate(function (self, error) {
             if (self.pending) {
                 self._rejected = true;
@@ -75,7 +75,7 @@ var SimplePromise = (function () {
         }, this, error);
         return this;
     };
-    SimplePromise.prototype.then = function (onFulfilled, onRejected) {
+    Promise.prototype.then = function (onFulfilled, onRejected) {
         if (this.pending) {
             if (onFulfilled) {
                 this._onresolve.push(onFulfilled);
@@ -86,7 +86,7 @@ var SimplePromise = (function () {
         }
         return this;
     };
-    SimplePromise.prototype.catch = function (onRejected) {
+    Promise.prototype.catch = function (onRejected) {
         if (this.pending) {
             if (onRejected) {
                 this._onreject.push(onRejected);
@@ -94,24 +94,24 @@ var SimplePromise = (function () {
         }
         return this;
     };
-    return SimplePromise;
+    return Promise;
 }());
-exports.SimplePromise = SimplePromise;
-(function (StreamStates) {
-    StreamStates[StreamStates["OPENING"] = 2] = "OPENING";
-    StreamStates[StreamStates["RUNNING"] = 4] = "RUNNING";
-    StreamStates[StreamStates["CLOSING"] = 8] = "CLOSING";
-    StreamStates[StreamStates["CLOSED"] = 16] = "CLOSED";
-})(exports.StreamStates || (exports.StreamStates = {}));
-var StreamStates = exports.StreamStates;
-var StreamNg = (function (_super) {
-    __extends(StreamNg, _super);
-    function StreamNg(options) {
+exports.Promise = Promise;
+(function (State) {
+    State[State["OPENING"] = 2] = "OPENING";
+    State[State["RUNNING"] = 4] = "RUNNING";
+    State[State["CLOSING"] = 8] = "CLOSING";
+    State[State["CLOSED"] = 16] = "CLOSED";
+})(exports.State || (exports.State = {}));
+var State = exports.State;
+var Stream = (function (_super) {
+    __extends(Stream, _super);
+    function Stream(options) {
         _super.call(this);
         this._maxThresholdSize = 16384;
         this._threshold = 0;
         this._objectMode = false;
-        this._state = StreamStates.RUNNING;
+        this._state = State.RUNNING;
         this._onopen = new Array();
         this._onclose = new Array();
         this._ondata = new Array();
@@ -135,62 +135,62 @@ var StreamNg = (function (_super) {
             }
         }
     }
-    Object.defineProperty(StreamNg.prototype, "readable", {
+    Object.defineProperty(Stream.prototype, "readable", {
         get: function () {
-            return (this._ondata.length && this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) ? true : false;
+            return (this._ondata.length && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "writable", {
+    Object.defineProperty(Stream.prototype, "writable", {
         get: function () {
-            return (this._write && this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) ? true : false;
+            return (this._write && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "isOpening", {
+    Object.defineProperty(Stream.prototype, "isOpening", {
         get: function () {
-            return this._state === StreamStates.OPENING;
+            return this._state === State.OPENING;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "isRunning", {
+    Object.defineProperty(Stream.prototype, "isRunning", {
         get: function () {
-            return this._state === StreamStates.RUNNING;
+            return this._state === State.RUNNING;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "isClosing", {
+    Object.defineProperty(Stream.prototype, "isClosing", {
         get: function () {
-            return this._state === StreamStates.CLOSING;
+            return this._state === State.CLOSING;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "isClosed", {
+    Object.defineProperty(Stream.prototype, "isClosed", {
         get: function () {
-            return this._state === StreamStates.CLOSED;
+            return this._state === State.CLOSED;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StreamNg.prototype, "state", {
+    Object.defineProperty(Stream.prototype, "state", {
         get: function () {
             return this._state;
         },
         enumerable: true,
         configurable: true
     });
-    StreamNg.prototype.setState = function (state) {
+    Stream.prototype.setState = function (state) {
         var self = this;
-        if (state & StreamStates.OPENING && self._state & StreamStates.CLOSED) {
-            self._state = StreamStates.OPENING;
+        if (state & State.OPENING && self._state & State.CLOSED) {
+            self._state = State.OPENING;
         }
-        else if (state & StreamStates.RUNNING && self._state & StreamStates.OPENING) {
-            self._state = StreamStates.RUNNING;
+        else if (state & State.RUNNING && self._state & State.OPENING) {
+            self._state = State.RUNNING;
             self._onopen.forEach(function (callback) {
                 try {
                     callback.call(self);
@@ -201,11 +201,11 @@ var StreamNg = (function (_super) {
             });
             self._onopen = new Array();
         }
-        else if (state & StreamStates.CLOSING && self._state & (StreamStates.OPENING | StreamStates.RUNNING)) {
-            self._state = StreamStates.CLOSING;
+        else if (state & State.CLOSING && self._state & (State.OPENING | State.RUNNING)) {
+            self._state = State.CLOSING;
         }
-        else if (state & StreamStates.CLOSED && self._state & ~(StreamStates.CLOSED)) {
-            self._state = StreamStates.CLOSED;
+        else if (state & State.CLOSED && self._state & ~(State.CLOSED)) {
+            self._state = State.CLOSED;
             self._onclose.forEach(function (callback) {
                 try {
                     callback.call(self);
@@ -218,12 +218,12 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    StreamNg.prototype.open = function (callback) {
-        if (this._state & StreamStates.OPENING) {
+    Stream.prototype.open = function (callback) {
+        if (this._state & State.OPENING) {
             this._onopen.push(callback);
         }
         else {
-            if (this._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+            if (this._state & (State.RUNNING | State.CLOSING)) {
                 try {
                     callback.call(this);
                 }
@@ -234,8 +234,8 @@ var StreamNg = (function (_super) {
         }
         return this;
     };
-    StreamNg.prototype.close = function (callback) {
-        if (this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) {
+    Stream.prototype.close = function (callback) {
+        if (this._state & (State.OPENING | State.RUNNING | State.CLOSING)) {
             this._onclose.push(callback);
         }
         else {
@@ -248,15 +248,15 @@ var StreamNg = (function (_super) {
         }
         return this;
     };
-    StreamNg.prototype.pause = function (callback) {
+    Stream.prototype.pause = function (callback) {
         this._onpause.push(callback);
         return this;
     };
-    StreamNg.prototype.resume = function (callback) {
+    Stream.prototype.resume = function (callback) {
         this._onresume.push(callback);
         return this;
     };
-    StreamNg.prototype.drain = function (callback) {
+    Stream.prototype.drain = function (callback) {
         var _this = this;
         setImmediate(function (self, callback) {
             if (self.writable) {
@@ -275,14 +275,14 @@ var StreamNg = (function (_super) {
         }, this, callback);
         return this;
     };
-    StreamNg.prototype.data = function (callback) {
+    Stream.prototype.data = function (callback) {
         this._ondata.push(callback);
         return this;
     };
-    StreamNg.prototype.end = function (arg) {
+    Stream.prototype.end = function (arg) {
         var self = this;
         if (arg instanceof Error) {
-            self.setState(StreamStates.CLOSED);
+            self.setState(State.CLOSED);
             self._reject(arg);
         }
         else if (arg && arg.then && arg.catch) {
@@ -292,18 +292,18 @@ var StreamNg = (function (_super) {
                 self.end(error);
             });
         }
-        else if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
-            self.setState(StreamStates.CLOSING);
+        else if (self._state & (State.RUNNING | State.CLOSING)) {
+            self.setState(State.CLOSING);
             self.drain(function () {
-                self.setState(StreamStates.CLOSED);
+                self.setState(State.CLOSED);
                 self._resolve(arg);
             });
         }
-        else if (self._state & StreamStates.OPENING) {
+        else if (self._state & State.OPENING) {
             self.open(function () {
-                self.setState(StreamStates.CLOSING);
+                self.setState(State.CLOSING);
                 self.drain(function () {
-                    self.setState(StreamStates.CLOSED);
+                    self.setState(State.CLOSED);
                     self._resolve(arg);
                 });
             });
@@ -313,9 +313,9 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    StreamNg.prototype.dispatchQueue = function () {
+    Stream.prototype.dispatchQueue = function () {
         var self = this;
-        if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+        if (self._state & (State.RUNNING | State.CLOSING)) {
             if (self._data.length) {
                 var data = self._data.pop();
                 var afterWrite = once(function (error) {
@@ -357,7 +357,7 @@ var StreamNg = (function (_super) {
                 }
             }
             else {
-                if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+                if (self._state & (State.RUNNING | State.CLOSING)) {
                     self._ondrain.forEach(function (onDrain) {
                         try {
                             onDrain.call(self);
@@ -372,7 +372,7 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    StreamNg.prototype.write = function (chunk, callback) {
+    Stream.prototype.write = function (chunk, callback) {
         var self = this;
         if (self.writable) {
             if (!self._objectMode) {
@@ -387,7 +387,7 @@ var StreamNg = (function (_super) {
             }
             else {
                 self._data.unshift(data);
-                if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+                if (self._state & (State.RUNNING | State.CLOSING)) {
                     setImmediate(function (self) {
                         self.dispatchQueue();
                     }, self);
@@ -430,7 +430,7 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    StreamNg.prototype.push = function (chunk, callback) {
+    Stream.prototype.push = function (chunk, callback) {
         var self = this;
         var afterPush = once(function (error) {
             if (callback) {
@@ -455,7 +455,7 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    StreamNg.prototype.pair = function (dst, options) {
+    Stream.prototype.pair = function (dst, options) {
         var self = this;
         options = options || {};
         if (dst && dst.then && dst.catch) {
@@ -477,9 +477,9 @@ var StreamNg = (function (_super) {
                 }
                 if (options.checkState && dst.open && dst.close) {
                     dst.open(function () {
-                        self.setState(StreamStates.RUNNING);
+                        self.setState(State.RUNNING);
                     }).close(function () {
-                        self.setState(StreamStates.CLOSED);
+                        self.setState(State.CLOSED);
                     });
                 }
                 if (dst.writable) {
@@ -586,7 +586,7 @@ var StreamNg = (function (_super) {
                     if (dst.readable) {
                         addReadable();
                     }
-                    else if (self._state & StreamStates.OPENING) {
+                    else if (self._state & State.OPENING) {
                         self.open(function () {
                             addReadable();
                         });
@@ -599,9 +599,7 @@ var StreamNg = (function (_super) {
         }
         return self;
     };
-    return StreamNg;
-}(SimplePromise));
-exports.StreamNg = StreamNg;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = StreamNg;
+    return Stream;
+}(Promise));
+exports.Stream = Stream;
 //# sourceMappingURL=stream-ng.js.map

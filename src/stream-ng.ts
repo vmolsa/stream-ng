@@ -6,14 +6,14 @@
  *
  */
 
+var global = this;
+
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type onResolve = (arg: any) => void;
 export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
-
-var global = this;
 
 function once(callback:(...restOfArgs: any[]) => void, self:any) {
   return (...restOfArgs: any[]) => {
@@ -25,7 +25,7 @@ function once(callback:(...restOfArgs: any[]) => void, self:any) {
   };
 }
 
-export class SimplePromise {
+export class Promise {
   private _fulfilled: boolean = false;
   private _rejected: boolean = false;
   private _onresolve: Array<onResolve> = new Array<onResolve>();
@@ -43,8 +43,8 @@ export class SimplePromise {
     return this._rejected;
   }
 
-  public _resolve(arg:any): SimplePromise {
-    setImmediate((self: SimplePromise, arg:any) => {
+  public _resolve(arg:any): Promise {
+    setImmediate((self: Promise, arg:any) => {
       if (self.pending) {
         self._fulfilled = true;
         
@@ -57,8 +57,8 @@ export class SimplePromise {
     return this;
   }
 
-  public _reject(error:any): SimplePromise {
-    setImmediate((self: SimplePromise, error:any) => {
+  public _reject(error:any): Promise {
+    setImmediate((self: Promise, error:any) => {
       if (self.pending) {
         self._rejected = true;
 
@@ -71,7 +71,7 @@ export class SimplePromise {
     return this;
   }
 
-  public then(onFulfilled: onResolve, onRejected?: onReject): SimplePromise {
+  public then(onFulfilled: onResolve, onRejected?: onReject): Promise {
     if (this.pending) {
       if (onFulfilled) {
         this._onresolve.push(onFulfilled);
@@ -85,7 +85,7 @@ export class SimplePromise {
     return this;
   }
 
-  public catch(onRejected: onReject): SimplePromise {
+  public catch(onRejected: onReject): Promise {
     if (this.pending) {
       if (onRejected) {
         this._onreject.push(onRejected);
@@ -96,42 +96,42 @@ export class SimplePromise {
   }
 }
 
-export enum StreamStates {
+export enum State {
   OPENING = 1 << 1,
   RUNNING = 1 << 2,
   CLOSING = 1 << 3,
   CLOSED = 1 << 4,
 }
 
-export interface StreamOptions {
+export interface Options {
   maxThresholdSize?: number;
   objectMode?: boolean;
-  state?: StreamStates;
+  state?: State;
   write?: dataCallback;
 }
 
-export interface StreamData {
+export interface Data {
   chunk: TypedArray,
   callback?: errorCallback,
 }
 
-export class StreamNg extends SimplePromise {
+export class Stream extends Promise {
   private _maxThresholdSize: number = 16384;
   private _threshold: number = 0;
   private _objectMode: boolean = false;
-  private _state: StreamStates = StreamStates.RUNNING;
+  private _state: State = State.RUNNING;
   private _onopen: Array<notifyCallback> = new Array<notifyCallback>();
   private _onclose: Array<notifyCallback> = new Array<notifyCallback>();
   private _ondata: Array<dataCallback> = new Array<dataCallback>();
   private _ondrain: Array<notifyCallback> = new Array<notifyCallback>();
   private _onresume: Array<notifyCallback> = new Array<notifyCallback>();
   private _onpause: Array<notifyCallback> = new Array<notifyCallback>();
-  private _data: Array<StreamData> = new Array<StreamData>();
+  private _data: Array<Data> = new Array<Data>();
   private _waiting: boolean = false;
 
   protected _write: dataCallback;
 
-  constructor(options?:StreamOptions) {
+  constructor(options?: Options) {
     super();
 
     if (options) {
@@ -154,40 +154,40 @@ export class StreamNg extends SimplePromise {
   }
 
   public get readable(): boolean {
-    return (this._ondata.length && this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) ? true : false;
+    return (this._ondata.length && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
   }
   
   public get writable(): boolean {
-    return (this._write && this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) ? true : false;
+    return (this._write && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
   }
 
   public get isOpening(): boolean {
-    return this._state === StreamStates.OPENING;
+    return this._state === State.OPENING;
   }
 
   public get isRunning(): boolean {
-    return this._state === StreamStates.RUNNING;
+    return this._state === State.RUNNING;
   }
 
   public get isClosing(): boolean {
-    return this._state === StreamStates.CLOSING;
+    return this._state === State.CLOSING;
   }
 
   public get isClosed(): boolean {
-    return this._state === StreamStates.CLOSED;
+    return this._state === State.CLOSED;
   }
 
-  public get state(): StreamStates {
+  public get state(): State {
     return this._state;
   }
 
-  public setState(state: StreamStates): StreamNg {
+  public setState(state: State): Stream {
     var self = this;
 
-    if (state & StreamStates.OPENING && self._state & StreamStates.CLOSED) {
-      self._state = StreamStates.OPENING;
-    } else if (state & StreamStates.RUNNING && self._state & StreamStates.OPENING) {
-      self._state = StreamStates.RUNNING;
+    if (state & State.OPENING && self._state & State.CLOSED) {
+      self._state = State.OPENING;
+    } else if (state & State.RUNNING && self._state & State.OPENING) {
+      self._state = State.RUNNING;
       
       self._onopen.forEach((callback) => {
         try {
@@ -198,10 +198,10 @@ export class StreamNg extends SimplePromise {
       });
       
       self._onopen = new Array<notifyCallback>();
-    } else if (state & StreamStates.CLOSING && self._state & (StreamStates.OPENING | StreamStates.RUNNING)) {
-      self._state = StreamStates.CLOSING;
-    } else if (state & StreamStates.CLOSED && self._state & ~(StreamStates.CLOSED)) {
-      self._state = StreamStates.CLOSED;
+    } else if (state & State.CLOSING && self._state & (State.OPENING | State.RUNNING)) {
+      self._state = State.CLOSING;
+    } else if (state & State.CLOSED && self._state & ~(State.CLOSED)) {
+      self._state = State.CLOSED;
 
       self._onclose.forEach((callback) => {
         try {
@@ -217,11 +217,11 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public open(callback: notifyCallback): StreamNg {
-    if (this._state & StreamStates.OPENING) {
+  public open(callback: notifyCallback): Stream {
+    if (this._state & State.OPENING) {
       this._onopen.push(callback);
     } else {
-      if (this._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+      if (this._state & (State.RUNNING | State.CLOSING)) {
         try {
           callback.call(this);
         } catch(error) {
@@ -233,8 +233,8 @@ export class StreamNg extends SimplePromise {
     return this;
   }
 
-  public close(callback: notifyCallback): StreamNg {
-    if (this._state & (StreamStates.OPENING | StreamStates.RUNNING | StreamStates.CLOSING)) {
+  public close(callback: notifyCallback): Stream {
+    if (this._state & (State.OPENING | State.RUNNING | State.CLOSING)) {
       this._onclose.push(callback);
     } else {
       try {
@@ -247,18 +247,18 @@ export class StreamNg extends SimplePromise {
     return this;
   }
 
-  public pause(callback: notifyCallback): StreamNg {
+  public pause(callback: notifyCallback): Stream {
     this._onpause.push(callback);
     return this;
   }
 
-  public resume(callback: notifyCallback): StreamNg {
+  public resume(callback: notifyCallback): Stream {
     this._onresume.push(callback);
     return this;
   }
 
-  public drain(callback: notifyCallback): StreamNg {
-    setImmediate((self: StreamNg, callback: notifyCallback) => {
+  public drain(callback: notifyCallback): Stream {
+    setImmediate((self: Stream, callback: notifyCallback) => {
       if (self.writable) {
         if (self._data.length) {
           this._ondrain.push(callback);
@@ -275,16 +275,16 @@ export class StreamNg extends SimplePromise {
     return this;
   }
 
-  public data(callback: dataCallback): StreamNg {
+  public data(callback: dataCallback): Stream {
     this._ondata.push(callback);
     return this;
   }
 
-  public end(arg?: any): StreamNg {
+  public end(arg?: any): Stream {
     var self = this;
 
     if (arg instanceof Error) {
-      self.setState(StreamStates.CLOSED);
+      self.setState(State.CLOSED);
       self._reject(arg);
     } else if (arg && arg.then && arg.catch) {
       arg.then((reply:any) => {
@@ -292,19 +292,19 @@ export class StreamNg extends SimplePromise {
       }, (error:any) => {
         self.end(error);
       });
-    } else if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
-      self.setState(StreamStates.CLOSING);
+    } else if (self._state & (State.RUNNING | State.CLOSING)) {
+      self.setState(State.CLOSING);
 
       self.drain(() => {
-        self.setState(StreamStates.CLOSED);
+        self.setState(State.CLOSED);
         self._resolve(arg);
       });
-    } else if (self._state & StreamStates.OPENING) {
+    } else if (self._state & State.OPENING) {
       self.open(() => {
-        self.setState(StreamStates.CLOSING);
+        self.setState(State.CLOSING);
 
         self.drain(() => {
-          self.setState(StreamStates.CLOSED);
+          self.setState(State.CLOSED);
           self._resolve(arg);
         });
       });
@@ -315,10 +315,10 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  private dispatchQueue(): StreamNg {
+  private dispatchQueue(): Stream {
     var self = this;
 
-    if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
+    if (self._state & (State.RUNNING | State.CLOSING)) {
       if (self._data.length) {
         var data = self._data.pop();
         
@@ -351,7 +351,7 @@ export class StreamNg extends SimplePromise {
             }
           }
           
-          self._data.length ? self.dispatchQueue() : setImmediate((self: StreamNg) => {
+          self._data.length ? self.dispatchQueue() : setImmediate((self: Stream) => {
             self.dispatchQueue();
           }, self);
         }, self);
@@ -362,7 +362,7 @@ export class StreamNg extends SimplePromise {
           return self.end(error);
         }
       } else {
-        if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {            
+        if (self._state & (State.RUNNING | State.CLOSING)) {            
           self._ondrain.forEach((onDrain) => {
             try {
               onDrain.call(self);
@@ -379,15 +379,15 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public write(chunk: TypedArray, callback?:errorCallback): StreamNg {
+  public write(chunk: TypedArray, callback?:errorCallback): Stream {
     var self = this;
-   
+  
     if (self.writable) {
       if (!self._objectMode) {
         chunk = new Uint8Array(chunk.buffer);
       }
       
-      var data: StreamData = {
+      var data: Data = {
         chunk: chunk,
         callback: callback,
       };
@@ -397,13 +397,13 @@ export class StreamNg extends SimplePromise {
       } else {
         self._data.unshift(data);
 
-        if (self._state & (StreamStates.RUNNING | StreamStates.CLOSING)) {
-          setImmediate((self: StreamNg) => {
+        if (self._state & (State.RUNNING | State.CLOSING)) {
+          setImmediate((self: Stream) => {
             self.dispatchQueue();
           }, self);
         } else {
           self.open(() => {
-            setImmediate((self: StreamNg) => {
+            setImmediate((self: Stream) => {
               self.dispatchQueue();
             }, self);
           });
@@ -440,7 +440,7 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public push(chunk: TypedArray, callback?:errorCallback): StreamNg {
+  public push(chunk: TypedArray, callback?:errorCallback): Stream {
     var self = this;
   
     var afterPush = once((error) => {    
@@ -468,7 +468,7 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 
-  public pair(dst:any, options:any): StreamNg {
+  public pair(dst:any, options:any): Stream {
     var self = this;
     
     options = options || {};
@@ -495,9 +495,9 @@ export class StreamNg extends SimplePromise {
         
         if (options.checkState && dst.open && dst.close) {
           dst.open(() => {
-            self.setState(StreamStates.RUNNING);
+            self.setState(State.RUNNING);
           }).close(() => {
-            self.setState(StreamStates.CLOSED);
+            self.setState(State.CLOSED);
           });
         }
         
@@ -622,7 +622,7 @@ export class StreamNg extends SimplePromise {
           
           if (dst.readable) {
             addReadable();
-          } else if (self._state & StreamStates.OPENING) {
+          } else if (self._state & State.OPENING) {
             self.open(() => {
               addReadable();
             });
@@ -636,5 +636,3 @@ export class StreamNg extends SimplePromise {
     return self;
   }
 }
-
-export default StreamNg;

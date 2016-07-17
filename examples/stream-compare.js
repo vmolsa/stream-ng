@@ -1,14 +1,13 @@
 var fs = require('fs');
-var StreamNgModule = require('../dist/stream-ng.js');
+var StreamNg = require('../dist/stream-ng.js');
 var stream = require('stream');
-
 var out = fs.openSync('./out', 'w');
 var out2 = fs.openSync('./out2', 'w');
 
 function testStreamNG(callback) {
   var time = Date.now();
-
-  var writable = new StreamNgModule.StreamNg({ objectMode: true, write: (chunk, next) => {
+ 
+  var writable = new StreamNg.Stream({ objectMode: true, write: (chunk, next) => {
     fs.write(out, chunk, 0, chunk.length, next);
   }});
 
