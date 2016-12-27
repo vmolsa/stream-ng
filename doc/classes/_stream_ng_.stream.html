@@ -7,7 +7,6 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
-	<script src="../assets/js/modernizr.js"></script>
 </head>
 <body>
 <header>
@@ -74,12 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">Stream</span>
-							</li>
-						</ul>
+						<span class="target">Stream</span>
 					</li>
 				</ul>
 			</section>
@@ -97,6 +91,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_data" class="tsd-kind-icon">_data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_end" class="tsd-kind-icon">_end</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_maxthresholdsize" class="tsd-kind-icon">_max<wbr>Threshold<wbr>Size</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_objectmode" class="tsd-kind-icon">_object<wbr>Mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_onclose" class="tsd-kind-icon">_onclose</a></li>
@@ -105,6 +100,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_onopen" class="tsd-kind-icon">_onopen</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_onpause" class="tsd-kind-icon">_onpause</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_onresume" class="tsd-kind-icon">_onresume</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_promise" class="tsd-kind-icon">_promise</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_state" class="tsd-kind-icon">_state</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_threshold" class="tsd-kind-icon">_threshold</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#_waiting" class="tsd-kind-icon">_waiting</a></li>
@@ -114,14 +110,11 @@
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_stream_ng_.stream.html#fulfilled" class="tsd-kind-icon">fulfilled</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#isclosing" class="tsd-kind-icon">is<wbr>Closing</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#isopening" class="tsd-kind-icon">is<wbr>Opening</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#isrunning" class="tsd-kind-icon">is<wbr>Running</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_stream_ng_.stream.html#pending" class="tsd-kind-icon">pending</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#readable" class="tsd-kind-icon">readable</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_stream_ng_.stream.html#rejected" class="tsd-kind-icon">rejected</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#state" class="tsd-kind-icon">state</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_stream_ng_.stream.html#writable" class="tsd-kind-icon">writable</a></li>
 							</ul>
@@ -129,21 +122,20 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_ng_.stream.html#_reject" class="tsd-kind-icon">_reject</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_ng_.stream.html#_resolve" class="tsd-kind-icon">_resolve</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_ng_.stream.html#catch" class="tsd-kind-icon">catch</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#catch" class="tsd-kind-icon">catch</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#data" class="tsd-kind-icon">data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_stream_ng_.stream.html#dispatchqueue" class="tsd-kind-icon">dispatch<wbr>Queue</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#drain" class="tsd-kind-icon">drain</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#finally" class="tsd-kind-icon">finally</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#open" class="tsd-kind-icon">open</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#pair" class="tsd-kind-icon">pair</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#pause" class="tsd-kind-icon">pause</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#push" class="tsd-kind-icon">push</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#resume" class="tsd-kind-icon">resume</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#setstate" class="tsd-kind-icon">set<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_ng_.stream.html#then" class="tsd-kind-icon">then</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#then" class="tsd-kind-icon">then</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_ng_.stream.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
 						</section>
@@ -162,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L132">stream-ng.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L63">stream-ng.ts:63</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -184,9 +176,43 @@
 					<div class="tsd-signature tsd-kind-icon">_data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_stream_ng_.data.html" class="tsd-signature-type">Data</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;Data&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L129">stream-ng.ts:129</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L58">stream-ng.ts:58</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_end" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _end</h3>
+					<div class="tsd-signature tsd-kind-icon">_end<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L61">stream-ng.ts:61</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>self<span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a>, arg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>self: <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h5>
+											</li>
+											<li>
+												<h5>arg: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_maxthresholdsize" class="tsd-anchor"></a>
@@ -194,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">_max<wbr>Threshold<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;16384</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L119">stream-ng.ts:119</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L48">stream-ng.ts:48</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -204,7 +230,7 @@
 					<div class="tsd-signature tsd-kind-icon">_object<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L121">stream-ng.ts:121</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L50">stream-ng.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -214,7 +240,7 @@
 					<div class="tsd-signature tsd-kind-icon">_onclose<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#notifycallback" class="tsd-signature-type">notifyCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;notifyCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L124">stream-ng.ts:124</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L53">stream-ng.ts:53</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -224,7 +250,7 @@
 					<div class="tsd-signature tsd-kind-icon">_ondata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#datacallback" class="tsd-signature-type">dataCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;dataCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L125">stream-ng.ts:125</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L54">stream-ng.ts:54</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -234,7 +260,7 @@
 					<div class="tsd-signature tsd-kind-icon">_ondrain<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#notifycallback" class="tsd-signature-type">notifyCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;notifyCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L126">stream-ng.ts:126</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L55">stream-ng.ts:55</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -244,7 +270,7 @@
 					<div class="tsd-signature tsd-kind-icon">_onopen<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#notifycallback" class="tsd-signature-type">notifyCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;notifyCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L123">stream-ng.ts:123</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L52">stream-ng.ts:52</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -254,7 +280,7 @@
 					<div class="tsd-signature tsd-kind-icon">_onpause<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#notifycallback" class="tsd-signature-type">notifyCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;notifyCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L128">stream-ng.ts:128</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L57">stream-ng.ts:57</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -264,7 +290,17 @@
 					<div class="tsd-signature tsd-kind-icon">_onresume<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_ng_.html#notifycallback" class="tsd-signature-type">notifyCallback</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array&lt;notifyCallback&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L127">stream-ng.ts:127</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L56">stream-ng.ts:56</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_promise" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _promise</h3>
+					<div class="tsd-signature tsd-kind-icon">_promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L60">stream-ng.ts:60</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -274,7 +310,7 @@
 					<div class="tsd-signature tsd-kind-icon">_state<span class="tsd-signature-symbol">:</span> <a href="../enums/_stream_ng_.state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> =&nbsp;State.RUNNING</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L122">stream-ng.ts:122</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L51">stream-ng.ts:51</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -284,7 +320,7 @@
 					<div class="tsd-signature tsd-kind-icon">_threshold<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L120">stream-ng.ts:120</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L49">stream-ng.ts:49</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -294,7 +330,7 @@
 					<div class="tsd-signature tsd-kind-icon">_waiting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L130">stream-ng.ts:130</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L59">stream-ng.ts:59</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -304,31 +340,13 @@
 					<div class="tsd-signature tsd-kind-icon">_write<span class="tsd-signature-symbol">:</span> <a href="../modules/_stream_ng_.html#datacallback" class="tsd-signature-type">dataCallback</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L132">stream-ng.ts:132</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L63">stream-ng.ts:63</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="fulfilled" class="tsd-anchor"></a>
-					<h3>fulfilled</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> fulfilled<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#fulfilled">fulfilled</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L38">stream-ng.ts:38</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="isclosed" class="tsd-anchor"></a>
 					<h3>is<wbr>Closed</h3>
@@ -339,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L176">stream-ng.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L163">stream-ng.ts:163</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -356,7 +374,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L172">stream-ng.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L159">stream-ng.ts:159</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -373,7 +391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L164">stream-ng.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L151">stream-ng.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -390,25 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L168">stream-ng.ts:168</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="pending" class="tsd-anchor"></a>
-					<h3>pending</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> pending<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#pending">pending</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L34">stream-ng.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L155">stream-ng.ts:155</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -425,25 +425,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L156">stream-ng.ts:156</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="rejected" class="tsd-anchor"></a>
-					<h3>rejected</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> rejected<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#rejected">rejected</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L42">stream-ng.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L143">stream-ng.ts:143</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -460,7 +442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L180">stream-ng.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L167">stream-ng.ts:167</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../enums/_stream_ng_.state.html" class="tsd-signature-type">State</a></h4>
@@ -477,7 +459,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L160">stream-ng.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L147">stream-ng.ts:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -487,75 +469,26 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="_reject" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _reject</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">_reject<span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#_reject">_reject</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L60">stream-ng.ts:60</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>error: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="_resolve" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _resolve</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">_resolve<span class="tsd-signature-symbol">(</span>arg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#_resolve">_resolve</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L46">stream-ng.ts:46</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>arg: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="catch" class="tsd-anchor"></a>
 					<h3>catch</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">catch<span class="tsd-signature-symbol">(</span>onRejected<span class="tsd-signature-symbol">: </span><a href="../modules/_stream_ng_.html#onreject" class="tsd-signature-type">onReject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">catch<span class="tsd-signature-symbol">(</span>reject<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#catch">catch</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L88">stream-ng.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L128">stream-ng.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>onRejected: <a href="../modules/_stream_ng_.html#onreject" class="tsd-signature-type">onReject</a></h5>
+									<h5>reject: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -569,7 +502,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L236">stream-ng.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L223">stream-ng.ts:223</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -592,7 +525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L278">stream-ng.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L271">stream-ng.ts:271</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -615,7 +548,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L318">stream-ng.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L281">stream-ng.ts:281</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
@@ -632,7 +565,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L260">stream-ng.ts:260</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L247">stream-ng.ts:247</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -655,13 +588,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L283">stream-ng.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L276">stream-ng.ts:276</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> arg: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="finally" class="tsd-anchor"></a>
+					<h3>finally</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">finally<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L133">stream-ng.ts:133</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>callback: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
@@ -678,7 +634,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L220">stream-ng.ts:220</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L207">stream-ng.ts:207</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -695,22 +651,19 @@
 					<a name="pair" class="tsd-anchor"></a>
 					<h3>pair</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">pair<span class="tsd-signature-symbol">(</span>dst<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></li>
+						<li class="tsd-signature tsd-kind-icon">pair<span class="tsd-signature-symbol">(</span>dst<span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L471">stream-ng.ts:471</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L434">stream-ng.ts:434</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>dst: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>options: <span class="tsd-signature-type">any</span></h5>
+									<h5>dst: <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
@@ -727,7 +680,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L250">stream-ng.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L237">stream-ng.ts:237</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -750,7 +703,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L443">stream-ng.ts:443</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L406">stream-ng.ts:406</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -776,7 +729,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L255">stream-ng.ts:255</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L242">stream-ng.ts:242</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -799,7 +752,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L184">stream-ng.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L171">stream-ng.ts:171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -812,30 +765,29 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="then" class="tsd-anchor"></a>
 					<h3>then</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">then<span class="tsd-signature-symbol">(</span>onFulfilled<span class="tsd-signature-symbol">: </span><a href="../modules/_stream_ng_.html#onresolve" class="tsd-signature-type">onResolve</a>, onRejected<span class="tsd-signature-symbol">?: </span><a href="../modules/_stream_ng_.html#onreject" class="tsd-signature-type">onReject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">then<span class="tsd-signature-symbol">(</span>resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, reject<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_ng_.promise.html">Promise</a>.<a href="_stream_ng_.promise.html#then">then</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L74">stream-ng.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L123">stream-ng.ts:123</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>onFulfilled: <a href="../modules/_stream_ng_.html#onresolve" class="tsd-signature-type">onResolve</a></h5>
+									<h5>resolve: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> onRejected: <a href="../modules/_stream_ng_.html#onreject" class="tsd-signature-type">onReject</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> reject: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.promise.html" class="tsd-signature-type">Promise</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_stream_ng_.stream.html" class="tsd-signature-type">Stream</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -849,7 +801,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/b4a0f01/src/stream-ng.ts#L382">stream-ng.ts:382</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/48e17d0/src/stream-ng.ts#L345">stream-ng.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -883,9 +835,6 @@
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_stream_ng_.state.html" class="tsd-kind-icon">State</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_stream_ng_.promise.html" class="tsd-kind-icon">Promise</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
@@ -896,6 +845,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_stream_ng_.stream.html#_data" class="tsd-kind-icon">_data</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_stream_ng_.stream.html#_end" class="tsd-kind-icon">_end</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_stream_ng_.stream.html#_maxthresholdsize" class="tsd-kind-icon">_max<wbr>Threshold<wbr>Size</a>
@@ -922,6 +874,9 @@
 								<a href="_stream_ng_.stream.html#_onresume" class="tsd-kind-icon">_onresume</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_stream_ng_.stream.html#_promise" class="tsd-kind-icon">_promise</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_stream_ng_.stream.html#_state" class="tsd-kind-icon">_state</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -932,9 +887,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="_stream_ng_.stream.html#_write" class="tsd-kind-icon">_write</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_ng_.stream.html#fulfilled" class="tsd-kind-icon">fulfilled</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#isclosed" class="tsd-kind-icon">is<wbr>Closed</a>
@@ -948,14 +900,8 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#isrunning" class="tsd-kind-icon">is<wbr>Running</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_ng_.stream.html#pending" class="tsd-kind-icon">pending</a>
-							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#readable" class="tsd-kind-icon">readable</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_ng_.stream.html#rejected" class="tsd-kind-icon">rejected</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#state" class="tsd-kind-icon">state</a>
@@ -963,13 +909,7 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#writable" class="tsd-kind-icon">writable</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_ng_.stream.html#_reject" class="tsd-kind-icon">_reject</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_ng_.stream.html#_resolve" class="tsd-kind-icon">_resolve</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#catch" class="tsd-kind-icon">catch</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -986,6 +926,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#end" class="tsd-kind-icon">end</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_stream_ng_.stream.html#finally" class="tsd-kind-icon">finally</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#open" class="tsd-kind-icon">open</a>
@@ -1005,7 +948,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#setstate" class="tsd-kind-icon">set<wbr>State</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_stream_ng_.stream.html#then" class="tsd-kind-icon">then</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1110,7 +1053,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
