@@ -9,8 +9,6 @@
 var global = this;
 
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
-export declare type onResolve = (arg: any) => void;
-export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
@@ -39,7 +37,7 @@ export interface Options {
   write?: dataCallback;
 }
 
-export interface Data {
+interface Data {
   chunk: TypedArray,
   callback?: errorCallback,
 }
