@@ -429,7 +429,7 @@ export class Stream {
     return self;
   }
 
-  public pair(dst:Stream): Stream {
+  public pipe(dst:Stream): Stream {
     var self = this;
 
     dst.then((arg: any) => {
