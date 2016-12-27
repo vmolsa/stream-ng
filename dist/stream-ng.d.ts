@@ -52,5 +52,5 @@ export declare class Stream {
     private dispatchQueue();
     write(chunk: TypedArray, callback?: errorCallback): Stream;
     push(chunk: TypedArray, callback?: errorCallback): Stream;
-    pair(dst: Stream): Stream;
+    pipe(dst: Stream): Stream;
 }

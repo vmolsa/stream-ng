@@ -375,7 +375,7 @@ class Stream {
         }
         return self;
     }
-    pair(dst) {
+    pipe(dst) {
         var self = this;
         dst.then((arg) => {
             self.end(arg);
