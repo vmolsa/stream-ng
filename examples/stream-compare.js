@@ -11,7 +11,7 @@ function testStreamNG(callback) {
     fs.write(out, chunk, 0, chunk.length, next);
   }});
 
-  writable.then(() => {
+  writable.then((arg) => {
     var end = Date.now();
     console.log('StreamNG Done: ' + (end - time) + 'ms');
     setImmediate(callback);
@@ -19,7 +19,6 @@ function testStreamNG(callback) {
     throw error;
   });
   
-  /*
   writable.open(() => {
     console.log('Open');
   }).close(() => {
@@ -31,7 +30,6 @@ function testStreamNG(callback) {
   }).resume(() => {
     console.log('Resume');
   });
-  */
 
   for (var index = 0; index < 1024; index++) {
     writable.write(new Buffer(1024 * 10 + index));
