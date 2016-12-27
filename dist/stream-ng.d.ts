@@ -4,19 +4,6 @@ export declare type onReject = (error: any) => void;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
-export declare class Promise {
-    private _fulfilled;
-    private _rejected;
-    private _onresolve;
-    private _onreject;
-    pending: boolean;
-    fulfilled: boolean;
-    rejected: boolean;
-    protected _resolve(arg: any): Promise;
-    protected _reject(error: any): Promise;
-    then(onFulfilled: onResolve, onRejected?: onReject): Promise;
-    catch(onRejected: onReject): Promise;
-}
 export declare enum State {
     OPENING = 2,
     RUNNING = 4,
@@ -33,7 +20,7 @@ export interface Data {
     chunk: TypedArray;
     callback?: errorCallback;
 }
-export declare class Stream extends Promise {
+export declare class Stream {
     private _maxThresholdSize;
     private _threshold;
     private _objectMode;
@@ -46,15 +33,20 @@ export declare class Stream extends Promise {
     private _onpause;
     private _data;
     private _waiting;
+    private _promise;
+    private _end;
     protected _write: dataCallback;
     constructor(options?: Options);
-    readable: boolean;
-    writable: boolean;
-    isOpening: boolean;
-    isRunning: boolean;
-    isClosing: boolean;
-    isClosed: boolean;
-    state: State;
+    then(resolve: any, reject?: any): Stream;
+    catch(reject: any): Stream;
+    finally(callback: any): Stream;
+    readonly readable: boolean;
+    readonly writable: boolean;
+    readonly isOpening: boolean;
+    readonly isRunning: boolean;
+    readonly isClosing: boolean;
+    readonly isClosed: boolean;
+    readonly state: State;
     setState(state: State): Stream;
     open(callback: notifyCallback): Stream;
     close(callback: notifyCallback): Stream;
@@ -66,5 +58,5 @@ export declare class Stream extends Promise {
     private dispatchQueue();
     write(chunk: TypedArray, callback?: errorCallback): Stream;
     push(chunk: TypedArray, callback?: errorCallback): Stream;
-    pair(dst: any, options: any): Stream;
+    pair(dst: Stream): Stream;
 }

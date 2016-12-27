@@ -25,77 +25,6 @@ function once(callback:(...restOfArgs: any[]) => void, self:any) {
   };
 }
 
-export class Promise {
-  private _fulfilled: boolean = false;
-  private _rejected: boolean = false;
-  private _onresolve: Array<onResolve> = new Array<onResolve>();
-  private _onreject: Array<onReject> = new Array<onReject>();
-
-  public get pending(): boolean {
-    return (!this._fulfilled && !this._rejected);
-  }
-
-  public get fulfilled(): boolean {
-    return this._fulfilled;
-  }
-
-  public get rejected(): boolean {
-    return this._rejected;
-  }
-
-  protected _resolve(arg:any): Promise {
-    setImmediate((self: Promise, arg:any) => {
-      if (self.pending) {
-        self._fulfilled = true;
-        
-        self._onresolve.forEach((callback) => {
-          callback.call(self, arg);
-        });
-      }
-    }, this, arg);
-
-    return this;
-  }
-
-  protected _reject(error:any): Promise {
-    setImmediate((self: Promise, error:any) => {
-      if (self.pending) {
-        self._rejected = true;
-
-        self._onreject.forEach((callback) => {
-          callback.call(self, error);
-        });
-      }
-    }, this, error);
-
-    return this;
-  }
-
-  public then(onFulfilled: onResolve, onRejected?: onReject): Promise {
-    if (this.pending) {
-      if (onFulfilled) {
-        this._onresolve.push(onFulfilled);
-      }
-
-      if (onRejected) {
-        this._onreject.push(onRejected);
-      }
-    }
-
-    return this;
-  }
-
-  public catch(onRejected: onReject): Promise {
-    if (this.pending) {
-      if (onRejected) {
-        this._onreject.push(onRejected);
-      }
-    }
-
-    return this;
-  }
-}
-
 export enum State {
   OPENING = 1 << 1,
   RUNNING = 1 << 2,
@@ -115,7 +44,7 @@ export interface Data {
   callback?: errorCallback,
 }
 
-export class Stream extends Promise {
+export class Stream {
   private _maxThresholdSize: number = 16384;
   private _threshold: number = 0;
   private _objectMode: boolean = false;
@@ -128,11 +57,49 @@ export class Stream extends Promise {
   private _onpause: Array<notifyCallback> = new Array<notifyCallback>();
   private _data: Array<Data> = new Array<Data>();
   private _waiting: boolean = false;
+  private _promise: Promise<any>;
+  private _end: (self: Stream, arg: any) => void = undefined;
 
   protected _write: dataCallback;
 
   constructor(options?: Options) {
-    super();
+    let end: (self: Stream, arg: any) => void = undefined;
+    let promise = new Promise<any>((resolve, reject) => {
+      end = (self: Stream, arg: any) => {
+        if (arg instanceof Error) {
+          self.setState(State.CLOSED);
+          reject(arg);
+        } else if (arg && arg.then && arg.catch) {
+          arg.then((reply:any) => {
+            self.end(reply);
+          }, (error:any) => {
+            self.end(error);
+          });
+        } else if (self._state & (State.RUNNING | State.CLOSING)) {
+          self.setState(State.CLOSING);
+
+          self.drain(() => {
+            self.setState(State.CLOSED);
+            resolve(arg);
+          });
+        } else if (self._state & State.OPENING) {
+          self.open(() => {
+            self.setState(State.CLOSING);
+
+            self.drain(() => {
+              self.setState(State.CLOSED);
+              resolve(arg);
+            });
+          });
+        } else {
+          self.setState(State.CLOSED);
+          resolve(arg);
+        }
+      };
+    });
+
+    this._end = end;
+    this._promise = promise;
 
     if (options) {
       if (options.maxThresholdSize) {
@@ -151,6 +118,26 @@ export class Stream extends Promise {
         this._write = options.write;
       }
     }
+  }
+
+  public then(resolve: any, reject?: any) : Stream {
+    this._promise.then(resolve, reject);
+    return this;
+  }
+
+  public catch(reject: any) : Stream {
+    this._promise.catch(reject);
+    return this;
+  }
+
+  public finally(callback: any) : Stream {
+    this._promise.then(() => {
+      callback();
+    }, () => {
+      callback();
+    });
+
+    return this;
   }
 
   public get readable(): boolean {
@@ -267,7 +254,13 @@ export class Stream extends Promise {
             callback.call(self);
           } catch(error) {
             self.end(error);
-          } 
+          }
+        }
+      } else {
+        try {
+          callback.call(self);
+        } catch(error) {
+          self.end(error);
         }
       }
     }, this, callback);
@@ -281,38 +274,8 @@ export class Stream extends Promise {
   }
 
   public end(arg?: any): Stream {
-    var self = this;
-
-    if (arg instanceof Error) {
-      self.setState(State.CLOSED);
-      self._reject(arg);
-    } else if (arg && arg.then && arg.catch) {
-      arg.then((reply:any) => {
-        self.end(reply);
-      }, (error:any) => {
-        self.end(error);
-      });
-    } else if (self._state & (State.RUNNING | State.CLOSING)) {
-      self.setState(State.CLOSING);
-
-      self.drain(() => {
-        self.setState(State.CLOSED);
-        self._resolve(arg);
-      });
-    } else if (self._state & State.OPENING) {
-      self.open(() => {
-        self.setState(State.CLOSING);
-
-        self.drain(() => {
-          self.setState(State.CLOSED);
-          self._resolve(arg);
-        });
-      });
-    } else {
-      self._resolve(arg);
-    }
-
-    return self;
+    this._end(this, arg);  
+    return this;
   }
 
   private dispatchQueue(): Stream {
@@ -384,7 +347,7 @@ export class Stream extends Promise {
   
     if (self.writable) {
       if (!self._objectMode) {
-        chunk = new Uint8Array(chunk.buffer);
+        chunk = new Uint8Array(chunk);
       }
       
       var data: Data = {
@@ -468,171 +431,31 @@ export class Stream extends Promise {
     return self;
   }
 
-  public pair(dst:any, options:any): Stream {
+  public pair(dst:Stream): Stream {
     var self = this;
-    
-    options = options || {};
-    
-    if (dst && dst.then && dst.catch) {
-      if (!dst.pending) {
-        return self.end(new Error('Stream has been resolved.'));
-      }
 
-      if (dst.data && dst.end && dst.write) {
-        if (!options.noResolve) { 
-          dst.then((arg:any) => {
-            self.end(arg);
-          }, (error:any) => {
-            self.end(error);
-          });
-          
-          self.then((arg) => {
-            dst.end(arg);
-          }, (error) => {
-            dst.end(error);
-          });
-        }
-        
-        if (options.checkState && dst.open && dst.close) {
-          dst.open(() => {
-            self.setState(State.RUNNING);
-          }).close(() => {
-            self.setState(State.CLOSED);
-          });
-        }
-        
-        if (dst.writable) {
-          self.data((chunk, next) => {
-            dst.write(chunk, next);
-          });
-        }
-        
-        if (self.writable) {
-          dst.data((chunk: TypedArray, next: errorCallback) => {
-            self.write(chunk, next);
-          });
-        }         
-      } else {
-        dst.then((arg:any) => {
-          self.end(arg);
-        }, (error:any) => {
-          self.end(error);
-        });
-      }
-    } else {
-      try {
-        var rejectedByError = false;
-        
-        function onError(error:any) {          
-          rejectedByError = true;
-          self.end(error);
-        }
-        
-        dst.on('error', onError);
-        
-        function onData(data:any) {
-          self.write(data);
-        }
-        
-        function onClose() {
-          if (!rejectedByError) {
-            self.end();
-          }
-        }
-        
-        function onFinish() {
-          if (!dst.readable && !options.noResolve) {
-            self.end();
-          }
-        }
-        
-        function onEnd() {
-          if (!dst.writable && !options.noResolve) {
-            self.end();
-          }
-        }
-        
-        function removeListeners() {
-          dst.removeListener('error', onError);
-          dst.removeListener('data', onData);
-          dst.removeListener('end', onEnd);
-          dst.removeListener('finish', onFinish);
-          dst.removeListener('close', onClose);
-        }
-        
-        function onResolve() {
-          removeListeners();
-          
-          if (dst.writable) {
-            dst.end();
-          }
-        }
-        
-        function onReject(error:any) {
-          removeListeners();
+    dst.then((arg: any) => {
+      self.end(arg);
+    }).catch((error:any) => {
+      self.end(error);
+    });
 
-          if (!rejectedByError && error) {
-            dst.emit('error', error);
-          }
-          
-          if (dst.writable) {
-            dst.end();
-          }
-        }
-        
-        function addReadable() {
-          if (dst.readable) {
-            self.resume(() => {
-              dst.resume();
-            });
-            
-            self.pause(() => {
-              dst.pause();
-            });
-            
-            dst.on('data', onData);
-            dst.on('end', onEnd);
-          }
-        }
-        
-        function addWritable() {
-          if (dst.writable) {
-            self.data((chunk, next) => {
-              if (dst.writable) {
-                if (global.Buffer !== 'undefined') {
-                  dst.write(new global.Buffer(chunk), next);
-                } else {
-                  dst.write(chunk, next);
-                }
-              } else {
-                self.end(new Error('Stream is not writable.'));
-              }
-            });
-            
-            dst.on('finish', onFinish);
-          }
-        }
-        
-        self.then(onResolve, onReject);
-        
-        if (dst.readable || dst.writable) {
-          dst.on('close', onClose);
-          
-          addWritable();
-          
-          if (dst.readable) {
-            addReadable();
-          } else if (self._state & State.OPENING) {
-            self.open(() => {
-              addReadable();
-            });
-          }
-        }
-      } catch (error) {
-        self.end(error);
-      }
+    if (dst.isOpening && self.isOpening) {
+      dst.open(() => {
+        self.setState(State.RUNNING);
+      });
+    } 
+
+    dst.close(() => {
+      self.setState(State.CLOSED);
+    });
+
+    if (dst.writable) {
+      self.data((chunk, next) => {
+        dst.write(chunk, next);
+      });
     }
-    
-    return self;
+
+    return dst;
   }
 }

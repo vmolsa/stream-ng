@@ -6,97 +6,15 @@
  *
  */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var global = this;
 function once(callback, self) {
-    var _this = this;
-    return function () {
-        var restOfArgs = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            restOfArgs[_i - 0] = arguments[_i];
-        }
+    return (...restOfArgs) => {
         if (callback) {
-            callback.apply(self || _this, restOfArgs);
+            callback.apply(self || this, restOfArgs);
         }
         callback = undefined;
     };
 }
-var Promise = (function () {
-    function Promise() {
-        this._fulfilled = false;
-        this._rejected = false;
-        this._onresolve = new Array();
-        this._onreject = new Array();
-    }
-    Object.defineProperty(Promise.prototype, "pending", {
-        get: function () {
-            return (!this._fulfilled && !this._rejected);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Promise.prototype, "fulfilled", {
-        get: function () {
-            return this._fulfilled;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Promise.prototype, "rejected", {
-        get: function () {
-            return this._rejected;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Promise.prototype._resolve = function (arg) {
-        setImmediate(function (self, arg) {
-            if (self.pending) {
-                self._fulfilled = true;
-                self._onresolve.forEach(function (callback) {
-                    callback.call(self, arg);
-                });
-            }
-        }, this, arg);
-        return this;
-    };
-    Promise.prototype._reject = function (error) {
-        setImmediate(function (self, error) {
-            if (self.pending) {
-                self._rejected = true;
-                self._onreject.forEach(function (callback) {
-                    callback.call(self, error);
-                });
-            }
-        }, this, error);
-        return this;
-    };
-    Promise.prototype.then = function (onFulfilled, onRejected) {
-        if (this.pending) {
-            if (onFulfilled) {
-                this._onresolve.push(onFulfilled);
-            }
-            if (onRejected) {
-                this._onreject.push(onRejected);
-            }
-        }
-        return this;
-    };
-    Promise.prototype.catch = function (onRejected) {
-        if (this.pending) {
-            if (onRejected) {
-                this._onreject.push(onRejected);
-            }
-        }
-        return this;
-    };
-    return Promise;
-}());
-exports.Promise = Promise;
 (function (State) {
     State[State["OPENING"] = 2] = "OPENING";
     State[State["RUNNING"] = 4] = "RUNNING";
@@ -104,10 +22,8 @@ exports.Promise = Promise;
     State[State["CLOSED"] = 16] = "CLOSED";
 })(exports.State || (exports.State = {}));
 var State = exports.State;
-var Stream = (function (_super) {
-    __extends(Stream, _super);
-    function Stream(options) {
-        _super.call(this);
+class Stream {
+    constructor(options) {
         this._maxThresholdSize = 16384;
         this._threshold = 0;
         this._objectMode = false;
@@ -120,6 +36,45 @@ var Stream = (function (_super) {
         this._onpause = new Array();
         this._data = new Array();
         this._waiting = false;
+        this._end = undefined;
+        let end = undefined;
+        let promise = new Promise((resolve, reject) => {
+            end = (self, arg) => {
+                if (arg instanceof Error) {
+                    self.setState(State.CLOSED);
+                    reject(arg);
+                }
+                else if (arg && arg.then && arg.catch) {
+                    arg.then((reply) => {
+                        self.end(reply);
+                    }, (error) => {
+                        self.end(error);
+                    });
+                }
+                else if (self._state & (State.RUNNING | State.CLOSING)) {
+                    self.setState(State.CLOSING);
+                    self.drain(() => {
+                        self.setState(State.CLOSED);
+                        resolve(arg);
+                    });
+                }
+                else if (self._state & State.OPENING) {
+                    self.open(() => {
+                        self.setState(State.CLOSING);
+                        self.drain(() => {
+                            self.setState(State.CLOSED);
+                            resolve(arg);
+                        });
+                    });
+                }
+                else {
+                    self.setState(State.CLOSED);
+                    resolve(arg);
+                }
+            };
+        });
+        this._end = end;
+        this._promise = promise;
         if (options) {
             if (options.maxThresholdSize) {
                 this._maxThresholdSize = options.maxThresholdSize;
@@ -135,63 +90,51 @@ var Stream = (function (_super) {
             }
         }
     }
-    Object.defineProperty(Stream.prototype, "readable", {
-        get: function () {
-            return (this._ondata.length && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "writable", {
-        get: function () {
-            return (this._write && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "isOpening", {
-        get: function () {
-            return this._state === State.OPENING;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "isRunning", {
-        get: function () {
-            return this._state === State.RUNNING;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "isClosing", {
-        get: function () {
-            return this._state === State.CLOSING;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "isClosed", {
-        get: function () {
-            return this._state === State.CLOSED;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Stream.prototype, "state", {
-        get: function () {
-            return this._state;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Stream.prototype.setState = function (state) {
+    then(resolve, reject) {
+        this._promise.then(resolve, reject);
+        return this;
+    }
+    catch(reject) {
+        this._promise.catch(reject);
+        return this;
+    }
+    finally(callback) {
+        this._promise.then(() => {
+            callback();
+        }, () => {
+            callback();
+        });
+        return this;
+    }
+    get readable() {
+        return (this._ondata.length && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
+    }
+    get writable() {
+        return (this._write && this._state & (State.OPENING | State.RUNNING | State.CLOSING)) ? true : false;
+    }
+    get isOpening() {
+        return this._state === State.OPENING;
+    }
+    get isRunning() {
+        return this._state === State.RUNNING;
+    }
+    get isClosing() {
+        return this._state === State.CLOSING;
+    }
+    get isClosed() {
+        return this._state === State.CLOSED;
+    }
+    get state() {
+        return this._state;
+    }
+    setState(state) {
         var self = this;
         if (state & State.OPENING && self._state & State.CLOSED) {
             self._state = State.OPENING;
         }
         else if (state & State.RUNNING && self._state & State.OPENING) {
             self._state = State.RUNNING;
-            self._onopen.forEach(function (callback) {
+            self._onopen.forEach((callback) => {
                 try {
                     callback.call(self);
                 }
@@ -206,7 +149,7 @@ var Stream = (function (_super) {
         }
         else if (state & State.CLOSED && self._state & ~(State.CLOSED)) {
             self._state = State.CLOSED;
-            self._onclose.forEach(function (callback) {
+            self._onclose.forEach((callback) => {
                 try {
                     callback.call(self);
                 }
@@ -217,8 +160,8 @@ var Stream = (function (_super) {
             self._onclose = new Array();
         }
         return self;
-    };
-    Stream.prototype.open = function (callback) {
+    }
+    open(callback) {
         if (this._state & State.OPENING) {
             this._onopen.push(callback);
         }
@@ -233,8 +176,8 @@ var Stream = (function (_super) {
             }
         }
         return this;
-    };
-    Stream.prototype.close = function (callback) {
+    }
+    close(callback) {
         if (this._state & (State.OPENING | State.RUNNING | State.CLOSING)) {
             this._onclose.push(callback);
         }
@@ -247,21 +190,20 @@ var Stream = (function (_super) {
             }
         }
         return this;
-    };
-    Stream.prototype.pause = function (callback) {
+    }
+    pause(callback) {
         this._onpause.push(callback);
         return this;
-    };
-    Stream.prototype.resume = function (callback) {
+    }
+    resume(callback) {
         this._onresume.push(callback);
         return this;
-    };
-    Stream.prototype.drain = function (callback) {
-        var _this = this;
-        setImmediate(function (self, callback) {
+    }
+    drain(callback) {
+        setImmediate((self, callback) => {
             if (self.writable) {
                 if (self._data.length) {
-                    _this._ondrain.push(callback);
+                    this._ondrain.push(callback);
                 }
                 else {
                     try {
@@ -272,53 +214,31 @@ var Stream = (function (_super) {
                     }
                 }
             }
+            else {
+                try {
+                    callback.call(self);
+                }
+                catch (error) {
+                    self.end(error);
+                }
+            }
         }, this, callback);
         return this;
-    };
-    Stream.prototype.data = function (callback) {
+    }
+    data(callback) {
         this._ondata.push(callback);
         return this;
-    };
-    Stream.prototype.end = function (arg) {
-        var self = this;
-        if (arg instanceof Error) {
-            self.setState(State.CLOSED);
-            self._reject(arg);
-        }
-        else if (arg && arg.then && arg.catch) {
-            arg.then(function (reply) {
-                self.end(reply);
-            }, function (error) {
-                self.end(error);
-            });
-        }
-        else if (self._state & (State.RUNNING | State.CLOSING)) {
-            self.setState(State.CLOSING);
-            self.drain(function () {
-                self.setState(State.CLOSED);
-                self._resolve(arg);
-            });
-        }
-        else if (self._state & State.OPENING) {
-            self.open(function () {
-                self.setState(State.CLOSING);
-                self.drain(function () {
-                    self.setState(State.CLOSED);
-                    self._resolve(arg);
-                });
-            });
-        }
-        else {
-            self._resolve(arg);
-        }
-        return self;
-    };
-    Stream.prototype.dispatchQueue = function () {
+    }
+    end(arg) {
+        this._end(this, arg);
+        return this;
+    }
+    dispatchQueue() {
         var self = this;
         if (self._state & (State.RUNNING | State.CLOSING)) {
             if (self._data.length) {
                 var data = self._data.pop();
-                var afterWrite = once(function (error) {
+                var afterWrite = once((error) => {
                     if (data.callback) {
                         try {
                             data.callback(error);
@@ -335,7 +255,7 @@ var Stream = (function (_super) {
                         self._threshold -= data.chunk.byteLength;
                         if (cont && (self._threshold < self._maxThresholdSize) && self._waiting) {
                             self._waiting = false;
-                            self._onresume.forEach(function (onResume) {
+                            self._onresume.forEach((onResume) => {
                                 try {
                                     onResume.call(self);
                                 }
@@ -345,7 +265,7 @@ var Stream = (function (_super) {
                             });
                         }
                     }
-                    self._data.length ? self.dispatchQueue() : setImmediate(function (self) {
+                    self._data.length ? self.dispatchQueue() : setImmediate((self) => {
                         self.dispatchQueue();
                     }, self);
                 }, self);
@@ -358,7 +278,7 @@ var Stream = (function (_super) {
             }
             else {
                 if (self._state & (State.RUNNING | State.CLOSING)) {
-                    self._ondrain.forEach(function (onDrain) {
+                    self._ondrain.forEach((onDrain) => {
                         try {
                             onDrain.call(self);
                         }
@@ -371,12 +291,12 @@ var Stream = (function (_super) {
             }
         }
         return self;
-    };
-    Stream.prototype.write = function (chunk, callback) {
+    }
+    write(chunk, callback) {
         var self = this;
         if (self.writable) {
             if (!self._objectMode) {
-                chunk = new Uint8Array(chunk.buffer);
+                chunk = new Uint8Array(chunk);
             }
             var data = {
                 chunk: chunk,
@@ -388,13 +308,13 @@ var Stream = (function (_super) {
             else {
                 self._data.unshift(data);
                 if (self._state & (State.RUNNING | State.CLOSING)) {
-                    setImmediate(function (self) {
+                    setImmediate((self) => {
                         self.dispatchQueue();
                     }, self);
                 }
                 else {
-                    self.open(function () {
-                        setImmediate(function (self) {
+                    self.open(() => {
+                        setImmediate((self) => {
                             self.dispatchQueue();
                         }, self);
                     });
@@ -404,7 +324,7 @@ var Stream = (function (_super) {
                 self._threshold += data.chunk.byteLength;
                 if ((self._threshold > self._maxThresholdSize) && !self._waiting) {
                     self._waiting = true;
-                    self._onpause.forEach(function (onPause) {
+                    self._onpause.forEach((onPause) => {
                         try {
                             onPause.call(self);
                         }
@@ -429,10 +349,10 @@ var Stream = (function (_super) {
             }
         }
         return self;
-    };
-    Stream.prototype.push = function (chunk, callback) {
+    }
+    push(chunk, callback) {
         var self = this;
-        var afterPush = once(function (error) {
+        var afterPush = once((error) => {
             if (callback) {
                 return callback.call(self, error);
             }
@@ -441,7 +361,7 @@ var Stream = (function (_super) {
             }
         }, self);
         if (self.readable) {
-            self._ondata.forEach(function (onData) {
+            self._ondata.forEach((onData) => {
                 try {
                     onData.call(self, chunk, afterPush);
                 }
@@ -454,152 +374,29 @@ var Stream = (function (_super) {
             afterPush(new Error('Stream is not readable.'));
         }
         return self;
-    };
-    Stream.prototype.pair = function (dst, options) {
+    }
+    pair(dst) {
         var self = this;
-        options = options || {};
-        if (dst && dst.then && dst.catch) {
-            if (!dst.pending) {
-                return self.end(new Error('Stream has been resolved.'));
-            }
-            if (dst.data && dst.end && dst.write) {
-                if (!options.noResolve) {
-                    dst.then(function (arg) {
-                        self.end(arg);
-                    }, function (error) {
-                        self.end(error);
-                    });
-                    self.then(function (arg) {
-                        dst.end(arg);
-                    }, function (error) {
-                        dst.end(error);
-                    });
-                }
-                if (options.checkState && dst.open && dst.close) {
-                    dst.open(function () {
-                        self.setState(State.RUNNING);
-                    }).close(function () {
-                        self.setState(State.CLOSED);
-                    });
-                }
-                if (dst.writable) {
-                    self.data(function (chunk, next) {
-                        dst.write(chunk, next);
-                    });
-                }
-                if (self.writable) {
-                    dst.data(function (chunk, next) {
-                        self.write(chunk, next);
-                    });
-                }
-            }
-            else {
-                dst.then(function (arg) {
-                    self.end(arg);
-                }, function (error) {
-                    self.end(error);
-                });
-            }
+        dst.then((arg) => {
+            self.end(arg);
+        }).catch((error) => {
+            self.end(error);
+        });
+        if (dst.isOpening && self.isOpening) {
+            dst.open(() => {
+                self.setState(State.RUNNING);
+            });
         }
-        else {
-            try {
-                var rejectedByError = false;
-                function onError(error) {
-                    rejectedByError = true;
-                    self.end(error);
-                }
-                dst.on('error', onError);
-                function onData(data) {
-                    self.write(data);
-                }
-                function onClose() {
-                    if (!rejectedByError) {
-                        self.end();
-                    }
-                }
-                function onFinish() {
-                    if (!dst.readable && !options.noResolve) {
-                        self.end();
-                    }
-                }
-                function onEnd() {
-                    if (!dst.writable && !options.noResolve) {
-                        self.end();
-                    }
-                }
-                function removeListeners() {
-                    dst.removeListener('error', onError);
-                    dst.removeListener('data', onData);
-                    dst.removeListener('end', onEnd);
-                    dst.removeListener('finish', onFinish);
-                    dst.removeListener('close', onClose);
-                }
-                function onResolve() {
-                    removeListeners();
-                    if (dst.writable) {
-                        dst.end();
-                    }
-                }
-                function onReject(error) {
-                    removeListeners();
-                    if (!rejectedByError && error) {
-                        dst.emit('error', error);
-                    }
-                    if (dst.writable) {
-                        dst.end();
-                    }
-                }
-                function addReadable() {
-                    if (dst.readable) {
-                        self.resume(function () {
-                            dst.resume();
-                        });
-                        self.pause(function () {
-                            dst.pause();
-                        });
-                        dst.on('data', onData);
-                        dst.on('end', onEnd);
-                    }
-                }
-                function addWritable() {
-                    if (dst.writable) {
-                        self.data(function (chunk, next) {
-                            if (dst.writable) {
-                                if (global.Buffer !== 'undefined') {
-                                    dst.write(new global.Buffer(chunk), next);
-                                }
-                                else {
-                                    dst.write(chunk, next);
-                                }
-                            }
-                            else {
-                                self.end(new Error('Stream is not writable.'));
-                            }
-                        });
-                        dst.on('finish', onFinish);
-                    }
-                }
-                self.then(onResolve, onReject);
-                if (dst.readable || dst.writable) {
-                    dst.on('close', onClose);
-                    addWritable();
-                    if (dst.readable) {
-                        addReadable();
-                    }
-                    else if (self._state & State.OPENING) {
-                        self.open(function () {
-                            addReadable();
-                        });
-                    }
-                }
-            }
-            catch (error) {
-                self.end(error);
-            }
+        dst.close(() => {
+            self.setState(State.CLOSED);
+        });
+        if (dst.writable) {
+            self.data((chunk, next) => {
+                dst.write(chunk, next);
+            });
         }
-        return self;
-    };
-    return Stream;
-}(Promise));
+        return dst;
+    }
+}
 exports.Stream = Stream;
 //# sourceMappingURL=stream-ng.js.map
