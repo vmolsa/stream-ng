@@ -15,13 +15,13 @@ function once(callback, self) {
         callback = undefined;
     };
 }
+var State;
 (function (State) {
     State[State["OPENING"] = 2] = "OPENING";
     State[State["RUNNING"] = 4] = "RUNNING";
     State[State["CLOSING"] = 8] = "CLOSING";
     State[State["CLOSED"] = 16] = "CLOSED";
-})(exports.State || (exports.State = {}));
-var State = exports.State;
+})(State = exports.State || (exports.State = {}));
 class Stream {
     constructor(options) {
         this._maxThresholdSize = 16384;
