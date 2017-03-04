@@ -11,9 +11,9 @@ var global = this;
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
-export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
+export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
 
-function once(callback:(...restOfArgs: any[]) => void, self:any) {
+export function once(callback:(...restOfArgs: any[]) => void, self:any) {
   return (...restOfArgs: any[]) => {
     if (callback) {
       callback.apply(self || this, restOfArgs);
@@ -21,6 +21,10 @@ function once(callback:(...restOfArgs: any[]) => void, self:any) {
 
     callback = undefined;
   };
+}
+
+export function isTypedArray(arg: any) {
+  return (arg instanceof ArrayBuffer || ArrayBuffer.isView(arg));
 }
 
 export enum State {
@@ -340,11 +344,20 @@ export class Stream {
     return self;
   }
 
-  public write(chunk: TypedArray, callback?:errorCallback): Stream {
+  public write(chunk: TypedArray | any, callback?:errorCallback): Stream {
     var self = this;
   
     if (self.writable) {
       if (!self._objectMode) {
+        if (!isTypedArray(chunk)) {
+          if (callback) {
+            callback(new Error('ObjectMode disabled'));
+            return self;
+          } else {
+            return self.end(new Error('ObjectMode disabled'));
+          }
+        }
+
         chunk = new Uint8Array(chunk);
       }
       
@@ -401,9 +414,18 @@ export class Stream {
     return self;
   }
 
-  public push(chunk: TypedArray, callback?:errorCallback): Stream {
+  public push(chunk: TypedArray | any, callback?:errorCallback): Stream {
     var self = this;
   
+    if (self._objectMode && !isTypedArray(chunk)) {
+      if (callback) {
+        callback(new Error('ObjectMode disabled'));
+        return self;
+      } else {
+        return self.end(new Error('ObjectMode disabled'));
+      }
+    }
+
     var afterPush = once((error) => {    
       if (callback) {
         return callback.call(self, error);
