@@ -6,6 +6,7 @@
  *
  */
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var global = this;
 function once(callback, self) {
     return (...restOfArgs) => {
@@ -15,6 +16,11 @@ function once(callback, self) {
         callback = undefined;
     };
 }
+exports.once = once;
+function isTypedArray(arg) {
+    return (arg instanceof ArrayBuffer || ArrayBuffer.isView(arg));
+}
+exports.isTypedArray = isTypedArray;
 var State;
 (function (State) {
     State[State["OPENING"] = 2] = "OPENING";
@@ -296,6 +302,15 @@ class Stream {
         var self = this;
         if (self.writable) {
             if (!self._objectMode) {
+                if (!isTypedArray(chunk)) {
+                    if (callback) {
+                        callback(new Error('ObjectMode disabled'));
+                        return self;
+                    }
+                    else {
+                        return self.end(new Error('ObjectMode disabled'));
+                    }
+                }
                 chunk = new Uint8Array(chunk);
             }
             var data = {
@@ -352,6 +367,15 @@ class Stream {
     }
     push(chunk, callback) {
         var self = this;
+        if (self._objectMode && !isTypedArray(chunk)) {
+            if (callback) {
+                callback(new Error('ObjectMode disabled'));
+                return self;
+            }
+            else {
+                return self.end(new Error('ObjectMode disabled'));
+            }
+        }
         var afterPush = once((error) => {
             if (callback) {
                 return callback.call(self, error);

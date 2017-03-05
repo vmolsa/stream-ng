@@ -1,7 +1,9 @@
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
-export declare type dataCallback = (chunk: TypedArray, next: errorCallback) => void;
+export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
+export declare function once(callback: (...restOfArgs: any[]) => void, self: any): (...restOfArgs: any[]) => void;
+export declare function isTypedArray(arg: any): boolean;
 export declare enum State {
     OPENING = 2,
     RUNNING = 4,
@@ -50,7 +52,7 @@ export declare class Stream {
     data(callback: dataCallback): Stream;
     end(arg?: any): Stream;
     private dispatchQueue();
-    write(chunk: TypedArray, callback?: errorCallback): Stream;
-    push(chunk: TypedArray, callback?: errorCallback): Stream;
+    write(chunk: TypedArray | any, callback?: errorCallback): Stream;
+    push(chunk: TypedArray | any, callback?: errorCallback): Stream;
     pipe(dst: Stream): Stream;
 }
