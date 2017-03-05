@@ -2,7 +2,7 @@ export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Ar
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
-export declare function once(callback: (...restOfArgs: any[]) => void, self: any): (...restOfArgs: any[]) => void;
+export declare function once(callback: (...restOfArgs: any[]) => void, self?: any): (...restOfArgs: any[]) => void;
 export declare function isTypedArray(arg: any): boolean;
 export declare enum State {
     OPENING = 2,

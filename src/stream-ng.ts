@@ -13,7 +13,7 @@ export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
 
-export function once(callback:(...restOfArgs: any[]) => void, self:any) {
+export function once(callback:(...restOfArgs: any[]) => void, self?:any) {
   return (...restOfArgs: any[]) => {
     if (callback) {
       callback.apply(self || this, restOfArgs);
