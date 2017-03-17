@@ -11,6 +11,8 @@ var global = this;
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
+export declare type resolveCallback = (arg?: any) => void;
+export declare type rejectCallback = (error: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
 
 export function once(callback:(...restOfArgs: any[]) => void, self?:any) {
@@ -60,48 +62,18 @@ export class Stream {
   private _data: Array<Data> = new Array<Data>();
   private _waiting: boolean = false;
   private _promise: Promise<any>;
-  private _end: (self: Stream, arg: any) => void = undefined;
+  private _resolve: (arg: any) => void;
+  private _reject: (error: Error) => void;
 
+  protected _onresolve: (arg: any, callback: resolveCallback) => void;
+  protected _onreject: (error: Error, callback: rejectCallback) => void;
   protected _write: dataCallback;
 
   constructor(options?: Options) {
-    let end: (self: Stream, arg: any) => void = undefined;
-    let promise = new Promise<any>((resolve, reject) => {
-      end = (self: Stream, arg: any) => {
-        if (arg instanceof Error) {
-          self.setState(State.CLOSED);
-          reject(arg);
-        } else if (arg && arg.then && arg.catch) {
-          arg.then((reply:any) => {
-            self.end(reply);
-          }, (error:any) => {
-            self.end(error);
-          });
-        } else if (self._state & (State.RUNNING | State.CLOSING)) {
-          self.setState(State.CLOSING);
-
-          self.drain(() => {
-            self.setState(State.CLOSED);
-            resolve(arg);
-          });
-        } else if (self._state & State.OPENING) {
-          self.open(() => {
-            self.setState(State.CLOSING);
-
-            self.drain(() => {
-              self.setState(State.CLOSED);
-              resolve(arg);
-            });
-          });
-        } else {
-          self.setState(State.CLOSED);
-          resolve(arg);
-        }
-      };
+    this._promise = new Promise<any>((resolve, reject) => {
+      this._resolve = resolve;
+      this._reject = reject;
     });
-
-    this._end = end;
-    this._promise = promise;
 
     if (options) {
       if (options.maxThresholdSize) {
@@ -276,8 +248,61 @@ export class Stream {
   }
 
   public end(arg?: any): Stream {
-    this._end(this, arg);  
-    return this;
+    let self = this;
+
+    if (arg && arg.then && arg.catch) {
+      arg.then((res: any) => {
+        self.end(res);
+      }).catch((error:any) => {
+        self.end(error);
+      });
+
+      return self;
+    }
+
+    if (arg instanceof Error) {
+      self.setState(State.CLOSING);
+
+      if (self._onreject) {
+        self._onreject(arg, (error: Error) => {
+          self.setState(State.CLOSED);
+          self._reject(error);
+        });
+      } else {
+        self.setState(State.CLOSED);
+        self._reject(arg);
+      }
+    } else if (self._state & (State.RUNNING | State.CLOSING)) {
+      self.setState(State.CLOSING);
+
+      self.drain(() => {
+        if (self._onresolve) {
+          self._onresolve(arg, (result?: any) => {
+            self.setState(State.CLOSED);
+            self._resolve(result);
+          });
+        } else {
+          self.setState(State.CLOSED);
+          self._resolve(arg);
+        }
+      });
+    } else if (self._state & State.OPENING) {
+      self.open(() => {
+        self.end(arg);
+      });
+    } else {
+      if (self._onresolve) {
+        self._onresolve(arg, (result?: any) => {
+          self.setState(State.CLOSED);
+          self._resolve(result);
+        });
+      } else {
+        self.setState(State.CLOSED);
+        self._resolve(arg);
+      }
+    }
+
+    return self;
   }
 
   private dispatchQueue(): Stream {

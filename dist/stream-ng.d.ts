@@ -1,6 +1,8 @@
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
+export declare type resolveCallback = (arg?: any) => void;
+export declare type rejectCallback = (error: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
 export declare function once(callback: (...restOfArgs: any[]) => void, self?: any): (...restOfArgs: any[]) => void;
 export declare function isTypedArray(arg: any): boolean;
@@ -30,7 +32,10 @@ export declare class Stream {
     private _data;
     private _waiting;
     private _promise;
-    private _end;
+    private _resolve;
+    private _reject;
+    protected _onresolve: (arg: any, callback: resolveCallback) => void;
+    protected _onreject: (error: Error, callback: rejectCallback) => void;
     protected _write: dataCallback;
     constructor(options?: Options);
     then(resolve: any, reject?: any): Stream;

@@ -42,45 +42,10 @@ class Stream {
         this._onpause = new Array();
         this._data = new Array();
         this._waiting = false;
-        this._end = undefined;
-        let end = undefined;
-        let promise = new Promise((resolve, reject) => {
-            end = (self, arg) => {
-                if (arg instanceof Error) {
-                    self.setState(State.CLOSED);
-                    reject(arg);
-                }
-                else if (arg && arg.then && arg.catch) {
-                    arg.then((reply) => {
-                        self.end(reply);
-                    }, (error) => {
-                        self.end(error);
-                    });
-                }
-                else if (self._state & (State.RUNNING | State.CLOSING)) {
-                    self.setState(State.CLOSING);
-                    self.drain(() => {
-                        self.setState(State.CLOSED);
-                        resolve(arg);
-                    });
-                }
-                else if (self._state & State.OPENING) {
-                    self.open(() => {
-                        self.setState(State.CLOSING);
-                        self.drain(() => {
-                            self.setState(State.CLOSED);
-                            resolve(arg);
-                        });
-                    });
-                }
-                else {
-                    self.setState(State.CLOSED);
-                    resolve(arg);
-                }
-            };
+        this._promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
         });
-        this._end = end;
-        this._promise = promise;
         if (options) {
             if (options.maxThresholdSize) {
                 this._maxThresholdSize = options.maxThresholdSize;
@@ -236,8 +201,61 @@ class Stream {
         return this;
     }
     end(arg) {
-        this._end(this, arg);
-        return this;
+        let self = this;
+        if (arg && arg.then && arg.catch) {
+            arg.then((res) => {
+                self.end(res);
+            }).catch((error) => {
+                self.end(error);
+            });
+            return self;
+        }
+        if (arg instanceof Error) {
+            self.setState(State.CLOSING);
+            if (self._onreject) {
+                self._onreject(arg, (error) => {
+                    self.setState(State.CLOSED);
+                    self._reject(error);
+                });
+            }
+            else {
+                self.setState(State.CLOSED);
+                self._reject(arg);
+            }
+        }
+        else if (self._state & (State.RUNNING | State.CLOSING)) {
+            self.setState(State.CLOSING);
+            self.drain(() => {
+                if (self._onresolve) {
+                    self._onresolve(arg, (result) => {
+                        self.setState(State.CLOSED);
+                        self._resolve(result);
+                    });
+                }
+                else {
+                    self.setState(State.CLOSED);
+                    self._resolve(arg);
+                }
+            });
+        }
+        else if (self._state & State.OPENING) {
+            self.open(() => {
+                self.end(arg);
+            });
+        }
+        else {
+            if (self._onresolve) {
+                self._onresolve(arg, (result) => {
+                    self.setState(State.CLOSED);
+                    self._resolve(result);
+                });
+            }
+            else {
+                self.setState(State.CLOSED);
+                self._resolve(arg);
+            }
+        }
+        return self;
     }
     dispatchQueue() {
         var self = this;
