@@ -32,8 +32,8 @@ export declare class Stream {
     private _data;
     private _waiting;
     private _promise;
-    private _resolve;
-    private _reject;
+    protected _resolve: (arg: any) => void;
+    protected _reject: (error: Error) => void;
     protected _onresolve: (arg: any, callback: resolveCallback) => void;
     protected _onreject: (error: Error, callback: rejectCallback) => void;
     protected _write: dataCallback;

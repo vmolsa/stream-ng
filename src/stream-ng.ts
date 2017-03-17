@@ -62,9 +62,9 @@ export class Stream {
   private _data: Array<Data> = new Array<Data>();
   private _waiting: boolean = false;
   private _promise: Promise<any>;
-  private _resolve: (arg: any) => void;
-  private _reject: (error: Error) => void;
 
+  protected _resolve: (arg: any) => void;
+  protected _reject: (error: Error) => void;
   protected _onresolve: (arg: any, callback: resolveCallback) => void;
   protected _onreject: (error: Error, callback: rejectCallback) => void;
   protected _write: dataCallback;
