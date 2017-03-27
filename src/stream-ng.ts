@@ -11,9 +11,10 @@ var global = this;
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
-export declare type resolveCallback = (arg?: any) => void;
+export declare type resolveCallback = (result?: any) => void;
 export declare type rejectCallback = (error: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
+export declare type endCallback = (resolve: resolveCallback, reject: rejectCallback, arg?: any) => void;
 
 export function once(callback:(...restOfArgs: any[]) => void, self?:any) {
   return (...restOfArgs: any[]) => {
@@ -41,11 +42,12 @@ export interface Options {
   objectMode?: boolean;
   state?: State;
   write?: dataCallback;
+  end?: endCallback;
 }
 
 interface Data {
-  chunk: TypedArray,
-  callback?: errorCallback,
+  chunk: TypedArray;
+  callback?: errorCallback;
 }
 
 export class Stream {
@@ -62,11 +64,10 @@ export class Stream {
   private _data: Array<Data> = new Array<Data>();
   private _waiting: boolean = false;
   private _promise: Promise<any>;
+  private _resolve: (arg: any) => void;
+  private _reject: (error: Error) => void;
 
-  protected _resolve: (arg: any) => void;
-  protected _reject: (error: Error) => void;
-  protected _onresolve: (arg: any, callback: resolveCallback) => void;
-  protected _onreject: (error: Error, callback: rejectCallback) => void;
+  protected _end: endCallback;
   protected _write: dataCallback;
 
   constructor(options?: Options) {
@@ -90,6 +91,10 @@ export class Stream {
 
       if (options.write) {
         this._write = options.write;
+      }
+
+      if (options.end) {
+        this._end = options.end;
       }
     }
   }
@@ -263,11 +268,14 @@ export class Stream {
     if (arg instanceof Error) {
       self.setState(State.CLOSING);
 
-      if (self._onreject) {
-        self._onreject(arg, (error: Error) => {
+      if (self._end) {
+        self._end((result?: any) => {
+          self.setState(State.CLOSED);
+          self._resolve(result);
+        }, (error: Error) => {
           self.setState(State.CLOSED);
           self._reject(error);
-        });
+        }, arg);
       } else {
         self.setState(State.CLOSED);
         self._reject(arg);
@@ -276,11 +284,14 @@ export class Stream {
       self.setState(State.CLOSING);
 
       self.drain(() => {
-        if (self._onresolve) {
-          self._onresolve(arg, (result?: any) => {
+        if (self._end) {
+          self._end((result?: any) => {
             self.setState(State.CLOSED);
             self._resolve(result);
-          });
+          }, (error: Error) => {
+            self.setState(State.CLOSED);
+            self._reject(error);
+          }, arg);
         } else {
           self.setState(State.CLOSED);
           self._resolve(arg);
@@ -291,11 +302,14 @@ export class Stream {
         self.end(arg);
       });
     } else {
-      if (self._onresolve) {
-        self._onresolve(arg, (result?: any) => {
+      if (self._end) {
+        self._end((result?: any) => {
           self.setState(State.CLOSED);
           self._resolve(result);
-        });
+        }, (error: Error) => {
+          self.setState(State.CLOSED);
+          self._reject(error);
+        }, arg);
       } else {
         self.setState(State.CLOSED);
         self._resolve(arg);

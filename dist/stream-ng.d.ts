@@ -1,9 +1,10 @@
 export declare type TypedArray = Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Float32Array | Float64Array | Uint8ClampedArray;
 export declare type notifyCallback = () => void;
 export declare type errorCallback = (error?: Error) => void;
-export declare type resolveCallback = (arg?: any) => void;
+export declare type resolveCallback = (result?: any) => void;
 export declare type rejectCallback = (error: Error) => void;
 export declare type dataCallback = (chunk: TypedArray | any, next: errorCallback) => void;
+export declare type endCallback = (resolve: resolveCallback, reject: rejectCallback, arg?: any) => void;
 export declare function once(callback: (...restOfArgs: any[]) => void, self?: any): (...restOfArgs: any[]) => void;
 export declare function isTypedArray(arg: any): boolean;
 export declare enum State {
@@ -17,6 +18,7 @@ export interface Options {
     objectMode?: boolean;
     state?: State;
     write?: dataCallback;
+    end?: endCallback;
 }
 export declare class Stream {
     private _maxThresholdSize;
@@ -32,10 +34,9 @@ export declare class Stream {
     private _data;
     private _waiting;
     private _promise;
-    protected _resolve: (arg: any) => void;
-    protected _reject: (error: Error) => void;
-    protected _onresolve: (arg: any, callback: resolveCallback) => void;
-    protected _onreject: (error: Error, callback: rejectCallback) => void;
+    private _resolve;
+    private _reject;
+    protected _end: endCallback;
     protected _write: dataCallback;
     constructor(options?: Options);
     then(resolve: any, reject?: any): Stream;

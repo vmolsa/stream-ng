@@ -94,6 +94,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#typedarray" class="tsd-kind-icon">Typed<wbr>Array</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#datacallback" class="tsd-kind-icon">data<wbr>Callback</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#endcallback" class="tsd-kind-icon">end<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#errorcallback" class="tsd-kind-icon">error<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#notifycallback" class="tsd-kind-icon">notify<wbr>Callback</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_stream_ng_.html#rejectcallback" class="tsd-kind-icon">reject<wbr>Callback</a></li>
@@ -124,7 +125,7 @@
 					<div class="tsd-signature tsd-kind-icon">Typed<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint16Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint32Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Int8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Int16Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Int32Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Float64Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8ClampedArray</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L11">stream-ng.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L11">stream-ng.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -134,7 +135,7 @@
 					<div class="tsd-signature tsd-kind-icon">data<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L16">stream-ng.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L16">stream-ng.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -163,12 +164,49 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="endcallback" class="tsd-anchor"></a>
+					<h3>end<wbr>Callback</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L17">stream-ng.ts:17</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>resolve<span class="tsd-signature-symbol">: </span><a href="_stream_ng_.html#resolvecallback" class="tsd-signature-type">resolveCallback</a>, reject<span class="tsd-signature-symbol">: </span><a href="_stream_ng_.html#rejectcallback" class="tsd-signature-type">rejectCallback</a>, arg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>resolve: <a href="_stream_ng_.html#resolvecallback" class="tsd-signature-type">resolveCallback</a></h5>
+											</li>
+											<li>
+												<h5>reject: <a href="_stream_ng_.html#rejectcallback" class="tsd-signature-type">rejectCallback</a></h5>
+											</li>
+											<li>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> arg: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
 					<a name="errorcallback" class="tsd-anchor"></a>
 					<h3>error<wbr>Callback</h3>
 					<div class="tsd-signature tsd-kind-icon">error<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L13">stream-ng.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L13">stream-ng.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -199,7 +237,7 @@
 					<div class="tsd-signature tsd-kind-icon">notify<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L12">stream-ng.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L12">stream-ng.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -224,7 +262,7 @@
 					<div class="tsd-signature tsd-kind-icon">reject<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L15">stream-ng.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L15">stream-ng.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -255,7 +293,7 @@
 					<div class="tsd-signature tsd-kind-icon">resolve<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L14">stream-ng.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L14">stream-ng.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -263,14 +301,14 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5><span class="tsd-flag ts-flagOptional">Optional</span> arg: <span class="tsd-signature-type">any</span></h5>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <span class="tsd-signature-type">any</span></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -289,7 +327,7 @@
 					<div class="tsd-signature tsd-kind-icon">global<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;this</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L9">stream-ng.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L9">stream-ng.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -306,7 +344,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L28">stream-ng.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L29">stream-ng.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -329,7 +367,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/fb30ca0/src/stream-ng.ts#L18">stream-ng.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/vmolsa/stream-ng/blob/2f1fbef/src/stream-ng.ts#L19">stream-ng.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -395,6 +433,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_stream_ng_.html#datacallback" class="tsd-kind-icon">data<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_stream_ng_.html#endcallback" class="tsd-kind-icon">end<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_stream_ng_.html#errorcallback" class="tsd-kind-icon">error<wbr>Callback</a>

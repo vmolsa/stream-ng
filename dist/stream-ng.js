@@ -59,6 +59,9 @@ class Stream {
             if (options.write) {
                 this._write = options.write;
             }
+            if (options.end) {
+                this._end = options.end;
+            }
         }
     }
     then(resolve, reject) {
@@ -212,11 +215,14 @@ class Stream {
         }
         if (arg instanceof Error) {
             self.setState(State.CLOSING);
-            if (self._onreject) {
-                self._onreject(arg, (error) => {
+            if (self._end) {
+                self._end((result) => {
+                    self.setState(State.CLOSED);
+                    self._resolve(result);
+                }, (error) => {
                     self.setState(State.CLOSED);
                     self._reject(error);
-                });
+                }, arg);
             }
             else {
                 self.setState(State.CLOSED);
@@ -226,11 +232,14 @@ class Stream {
         else if (self._state & (State.RUNNING | State.CLOSING)) {
             self.setState(State.CLOSING);
             self.drain(() => {
-                if (self._onresolve) {
-                    self._onresolve(arg, (result) => {
+                if (self._end) {
+                    self._end((result) => {
                         self.setState(State.CLOSED);
                         self._resolve(result);
-                    });
+                    }, (error) => {
+                        self.setState(State.CLOSED);
+                        self._reject(error);
+                    }, arg);
                 }
                 else {
                     self.setState(State.CLOSED);
@@ -244,11 +253,14 @@ class Stream {
             });
         }
         else {
-            if (self._onresolve) {
-                self._onresolve(arg, (result) => {
+            if (self._end) {
+                self._end((result) => {
                     self.setState(State.CLOSED);
                     self._resolve(result);
-                });
+                }, (error) => {
+                    self.setState(State.CLOSED);
+                    self._reject(error);
+                }, arg);
             }
             else {
                 self.setState(State.CLOSED);
