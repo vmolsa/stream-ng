@@ -77,7 +77,7 @@ export class Stream {
     });
 
     if (options) {
-      if (options.maxThresholdSize) {
+      if (typeof(options.maxThresholdSize) === 'number') {
         this._maxThresholdSize = options.maxThresholdSize;
       }
 
@@ -456,7 +456,7 @@ export class Stream {
   public push(chunk: TypedArray | any, callback?:errorCallback): Stream {
     var self = this;
   
-    if (self._objectMode && !isTypedArray(chunk)) {
+    if (!self._objectMode && !isTypedArray(chunk)) {
       if (callback) {
         callback(new Error('ObjectMode disabled'));
         return self;
