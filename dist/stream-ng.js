@@ -65,17 +65,23 @@ class Stream {
         }
     }
     then(resolve, reject) {
-        this._promise.then(resolve, reject);
+        this._promise.then(resolve, (error) => {
+            if (reject) {
+                reject(error);
+            }
+        });
         return this;
     }
     catch(reject) {
-        this._promise.catch(reject);
+        this._promise.catch((error) => {
+            reject(error);
+        });
         return this;
     }
     finally(callback) {
-        this._promise.then(() => {
+        this._promise.then((unused) => {
             callback();
-        }, () => {
+        }, (unused) => {
             callback();
         });
         return this;

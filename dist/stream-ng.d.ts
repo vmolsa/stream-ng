@@ -39,8 +39,8 @@ export declare class Stream {
     protected _end: endCallback;
     protected _write: dataCallback;
     constructor(options?: Options);
-    then(resolve: any, reject?: any): Stream;
-    catch(reject: any): Stream;
+    then(resolve: resolveCallback, reject?: rejectCallback): Stream;
+    catch(reject: rejectCallback): Stream;
     finally(callback: any): Stream;
     readonly readable: boolean;
     readonly writable: boolean;

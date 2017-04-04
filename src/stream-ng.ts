@@ -99,20 +99,28 @@ export class Stream {
     }
   }
 
-  public then(resolve: any, reject?: any) : Stream {
-    this._promise.then(resolve, reject);
+  public then(resolve: resolveCallback, reject?: rejectCallback) : Stream {
+    this._promise.then(resolve, (error: Error) => {
+      if (reject) {
+        reject(error);
+      }
+    });
+
     return this;
   }
 
-  public catch(reject: any) : Stream {
-    this._promise.catch(reject);
+  public catch(reject: rejectCallback) : Stream {
+    this._promise.catch((error: Error) => {
+      reject(error);
+    });
+
     return this;
   }
 
   public finally(callback: any) : Stream {
-    this._promise.then(() => {
+    this._promise.then((unused: any) => {
       callback();
-    }, () => {
+    }, (unused: Error) => {
       callback();
     });
 
